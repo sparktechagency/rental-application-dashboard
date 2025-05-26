@@ -78,16 +78,16 @@ const Sidebar = ({ isSidebarOpen }) => {
         } shadow-md transition-all bg-[#FEFEFE]  duration-300 overflow-auto`}
       >
         {/* Sidebar Logo */}
-        <div className="flex justify-center py-4">
+        <div className="flex justify-center border-b border-[#E5E5E5]">
           <img
             src={logo}
             alt="Logo"
-            className={`transition-all ${isSidebarOpen ? "w-20 h-24" : "w-16 h-16"}`}
+            className={`transition-all ${isSidebarOpen ? "size-32" : "w-16 h-16"}`}
           />
         </div>
 
 
-        <div className="mt-10">
+        <div className="flex flex-col gap-4 py-3">
           {/* Sidebar Menu */}
           <ul className="w-full flex flex-col gap-2">
             {sidebarItems.map((item) => (
@@ -96,8 +96,8 @@ const Sidebar = ({ isSidebarOpen }) => {
                 to={item.path}
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-secondary px-5 py-4 flex items-center gap-3  font-semibold text-primary"
-                    : "px-5 py-4 flex items-center gap-3 font-semibold text-[#9B9B9B]"
+                    ? "px-10 py-4 flex items-center gap-3  font-semibold text-primary"
+                    : "px-10 py-4 flex items-center gap-3 font-semibold text-[#9B9B9B]"
                 }
               >
                 {item.icon}
@@ -110,7 +110,7 @@ const Sidebar = ({ isSidebarOpen }) => {
         {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 px-5 py-4 text-rose-500 mt-10"
+          className="flex items-center gap-2 px-10 py-4 text-rose-500 mt-10"
         >
           <IoIosLogOut className="size-7" />
           {isSidebarOpen && <span>Logout</span>}
