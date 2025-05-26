@@ -230,73 +230,16 @@ const RecentBooking = () => {
         <Table
           columns={columns}
           dataSource={demoBookings}
-          pagination={false}
+          pagination={{
+            position: ["bottomCenter"],
+            current: currentPage,
+            total: demoBookings.length,
+            onChange: handlePageChange,
+          }}
           className="custom-table"
           scroll={{ x: 800 }}
           rowClassName="hover:bg-gray-50"
         />
-
-        {/* Pagination */}
-        <div className="flex justify-between items-center mt-6">
-          <div>
-            <Pagination
-              current={currentPage}
-              total={demoBookings.length}
-              pageSize={pageSize}
-              onChange={handlePageChange}
-              onShowSizeChange={handlePageSizeChange}
-              showSizeChanger={false}
-              showQuickJumper={false}
-              className="custom-pagination"
-              itemRender={(page, type, originalElement) => {
-                if (type === "prev") {
-                  return (
-                    <span className="px-3 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                      Back
-                    </span>
-                  );
-                }
-                if (type === "next") {
-                  return (
-                    <span className="px-3 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                      Next
-                    </span>
-                  );
-                }
-                if (type === "page") {
-                  return (
-                    <span
-                      className={`px-3 py-2 text-sm rounded-md ${
-                        page === currentPage
-                          ? "bg-green-500 text-white"
-                          : "text-gray-600 bg-white border border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      {page}
-                    </span>
-                  );
-                }
-                return originalElement;
-              }}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Page</span>
-            <Select
-              value={pageSize}
-              onChange={(value) => handlePageSizeChange(1, value)}
-              className="w-16"
-            >
-              <Option value={10}>10</Option>
-              <Option value={15}>15</Option>
-              <Option value={20}>20</Option>
-              <Option value={50}>50</Option>
-            </Select>
-            <span className="px-4 py-2 bg-white border border-gray-300 text-sm text-gray-600 rounded-md hover:bg-gray-50 cursor-pointer">
-              Go
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );

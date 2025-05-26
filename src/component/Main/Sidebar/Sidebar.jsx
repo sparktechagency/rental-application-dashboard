@@ -7,10 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../redux/features/auth/authSlice";
 import logo from "../../../assets/logo/logo.png";
-import { MdManageHistory } from "react-icons/md";
-import { FaCrown, FaImages } from "react-icons/fa6";
-import { RiCoupon2Fill } from "react-icons/ri";
-import { TbBrandGoogleAnalytics } from "react-icons/tb";
+import { CalendarCheck } from "lucide-react";
 
 const sidebarItems = [
   {
@@ -19,39 +16,14 @@ const sidebarItems = [
     icon: <LuLayoutDashboard className="size-7" />,
   },
   {
-    path: "/users",
-    name: "User Management",
+    path: "/booking",
+    name: "Booking",
+    icon: <CalendarCheck className="size-7" />,
+  },
+  {
+    path: "/all-users",
+    name: "All Users",
     icon: <PiUsers className="size-7" />,
-  },
-  {
-    path:"/content-moderation",
-    name: "Content Moderation",
-    icon: <MdManageHistory className="size-7" />,
-  },
-  {
-    path: "/analytics",
-    name: "Analytics",
-    icon: <TbBrandGoogleAnalytics className="size-7" />,
-  },
-  {
-    path: "/deals-events",
-    name: "Deals & Events",
-    icon: <RiCoupon2Fill className="size-7" />,
-  },
-  {
-    path:"/deals-category",
-    name: "Deals Category",
-    icon: <RiCoupon2Fill className="size-7" />,
-  },
-  {
-    path: "/subscription",
-    name: "Subscription",
-    icon: <FaCrown className="size-7" />,
-  },
-  {
-    path: "/onboarding-images",
-    name: "Onboarding Images",
-    icon: <FaImages className="size-7" />,
   },
   {
     path: "/settings",
@@ -82,10 +54,11 @@ const Sidebar = ({ isSidebarOpen }) => {
           <img
             src={logo}
             alt="Logo"
-            className={`transition-all ${isSidebarOpen ? "size-32" : "w-16 h-16"}`}
+            className={`transition-all ${
+              isSidebarOpen ? "size-32" : "w-16 h-16"
+            }`}
           />
         </div>
-
 
         <div className="flex flex-col gap-4 py-3">
           {/* Sidebar Menu */}

@@ -21,7 +21,7 @@ const MainLayout = () => {
         }`}
       >
         <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-        <section className="mt-24 w-full h-full px-5 py-5 bg-[#F5F5F5] overflow-auto">
+        <section className="mt-24 w-full px-5 py-5 bg-[#F5F5F5]">
           <Outlet />
         </section>
       </section>

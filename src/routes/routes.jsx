@@ -17,22 +17,8 @@ import AboutUs from "../component/Main/AboutUs/AboutUs";
 import EditTermsConditions from "../component/Main/EditTermsConditions/EditTermsConditions";
 import EditAboutUs from "../component/Main/EditAboutUs/EditAboutUs";
 import PrivacyPolicy from "../page/PrivacyPolicy/PrivacyPolicy";
-import AllAdminSuperAdmin from "../component/Main/AllAdminSuperAdmin/AllAdminSuperAdmin";
 import ErrorPage from "../component/Main/ErrorPage/ErrorPage";
-import Subscription from "../component/Main/Subscription/Subscription";
-import AddSubscription from "../component/Main/AddSubscription/AddSubscription";
-import EditSubscription from "../component/Main/EditSubscription/EditSubscription";
-import ContentModeration from "../component/Main/ContentModeration/ContentModeration";
-import ContentModerationDetails from "../component/Main/ContentModerationDetails/ContentModerationDetails";
-import Analytics from "../component/Main/Analytics/Analytics";
-import DealsEvents from "../component/Main/DealsEvents/DealsEvents";
-import UserDetails from "../component/Main/UserDetails/UserDetails";
-import OnboardingImage from "../component/Main/OnBardingImages/OnBardingImages";
-import AddEvent from "../component/Main/AddEvent/AddEvent";
-import EditEvent from "../component/Main/EditEvent/EditEvent";
-import AddDeals from "../component/Main/AddDeals/AddDeals";
-import EditDeals from "../component/Main/EditDeals/EditDeals";
-import DealCategory from "../component/Main/DealCategory/DealCategory";
+import Booking from "../component/Main/Booking/Booking";
 
 const router = createBrowserRouter([
   {
@@ -49,68 +35,12 @@ const router = createBrowserRouter([
         element: <DashboardHome />,
       },
       {
-        path: "users",
+        path: "all-users",
         element: <AllUsers />,
       },
       {
-        path: "users/:id",
-        element: <UserDetails />,
-      },
-      {
-        path: "/admins",
-        element: <AllAdminSuperAdmin />,
-      },
-      {
-        path: "/content-moderation",
-        element: <ContentModeration />,
-      },
-      {
-        path: "/content-moderation/:id",
-        element: <ContentModerationDetails />,
-      },
-      {
-        path: "/analytics",
-        element: <Analytics/>,
-      },
-      {
-        path: "/deals-events",
-        element: <DealsEvents />,
-      },
-      {
-        path: "/deals-category",
-        element: <DealCategory />,
-      },
-      {
-        path: "/add-deals",
-        element: <AddDeals/>
-      },
-      {
-        path: "/edit-deals/:id",
-        element: <EditDeals/>
-      },
-      {
-        path: "/add-event",
-        element: <AddEvent/>
-      },
-      {
-        path: "/edit-event/:id",
-        element: <EditEvent/>
-      },
-      {
-        path: "/onboarding-images",
-        element: <OnboardingImage />,
-      },
-      {
-        path: "/subscription",
-        element: <Subscription />,
-      },
-      {
-        path: "/subscription/add-subscription",
-        element: <AddSubscription />,
-      },
-      {
-        path: "/subscription/edit-subscription/:id",
-        element: <EditSubscription />,
+        path: "booking",
+        element: <Booking />,
       },
       {
         path: "personal-info",
