@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import { IoIosLogOut } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline, IoWalletOutline } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { PiUsers } from "react-icons/pi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../redux/features/auth/authSlice";
 import logo from "../../../assets/logo/logo.png";
-import { CalendarCheck } from "lucide-react";
+import { CalendarCheck, Car } from "lucide-react";
 
 const sidebarItems = [
   {
@@ -21,8 +21,18 @@ const sidebarItems = [
     icon: <CalendarCheck className="size-7" />,
   },
   {
+    path: "/earning",
+    name: "Earning",
+    icon: <IoWalletOutline className="size-7" />,
+  },
+  {
+    path:"/vehicles",
+    name: "Vehicles",
+    icon: <Car className="size-7" />,
+  },
+  {
     path: "/all-users",
-    name: "All Users",
+    name: "Users",
     icon: <PiUsers className="size-7" />,
   },
   {

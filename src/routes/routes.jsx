@@ -19,6 +19,8 @@ import EditAboutUs from "../component/Main/EditAboutUs/EditAboutUs";
 import PrivacyPolicy from "../page/PrivacyPolicy/PrivacyPolicy";
 import ErrorPage from "../component/Main/ErrorPage/ErrorPage";
 import Booking from "../component/Main/Booking/Booking";
+import Earning from "../component/Main/Earning/Earning";
+import AllCars from "../component/Main/AllCars/AllCars";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
       {
         path: "booking",
         element: <Booking />,
+      },
+      {
+        path:"/earning",
+        element:<Earning/>
+      },
+      {
+        path: "/vehicles",
+        element: <AllCars/>, // Placeholder for Vehicles component
       },
       {
         path: "personal-info",
