@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Plus, Heart, Eye, MapPin } from "lucide-react";
-import { FaEdit } from "react-icons/fa";
+import { Plus, Edit } from "lucide-react";
 import { FaTrash } from "react-icons/fa6";
 
 const AllCars = () => {
@@ -105,7 +104,7 @@ const AllCars = () => {
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-8 ">
-        <div className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-sm">
+        <div className="flex items-center space-x-4 bg-white px-4 py-3 rounded-lg shadow-sm">
           <button
             onClick={() => setActiveTab("Car")}
             className={`${
@@ -154,22 +153,22 @@ const AllCars = () => {
 
             {/* Car Details */}
             <div className="px-4 pb-4">
-              <h3 className="font-semibold text-gray-800 mb-1 text-lg">
+              <h3 className="font-semibold text-gray-800 mb-1 text-xl">
                 {car.title}
               </h3>
-              <p className="text-sm text-gray-600 mb-2">{car.subtitle}</p>
+              <p className="text-lg text-gray-600 my-2">{car.subtitle}</p>
 
-              <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
-                <div className="flex items-center space-x-1">
+              <div className="flex items-center justify-between text-sm text-gray-600 mt-4">
+                <div className="flex text-lg items-center space-x-1">
                   <span>🪑</span>
                   <span>Seats: {car.seats}</span>
                 </div>
-                <span className="font-semibold">Price: {car.price}</span>
+                <span className="font-semibold text-lg">Price: {car.price}</span>
               </div>
               <div className="flex items-center justify-between mt-7">
                 <div className="flex items-center gap-2 ">
                   <button className="size-10 flex justify-center items-center border border-gray-200  rounded">
-                    <FaEdit size={22} className="text-primary mx-auto" />
+                    <Edit size={22} className="text-primary mx-auto" />
                   </button>
                   <button className="size-10 flex justify-center items-center border border-gray-200  rounded">
                     <FaTrash size={18} className="text-rose-500 mx-auto" />
