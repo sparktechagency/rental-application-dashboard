@@ -16,7 +16,7 @@ const MainLayout = () => {
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       {/* Main Content */}
       <section
-        className={`w-full h-screen transition-all ${
+        className={`w-full transition-all ${
           isSidebarOpen ? "ml-[300px]" : "ml-[80px]"
         }`}
       >

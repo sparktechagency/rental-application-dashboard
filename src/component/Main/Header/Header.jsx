@@ -69,7 +69,7 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
     <div
       className={`${
         isSidebarOpen ? "ml-[300px]" : "ml-[80px]"
-      } w-full h-24 px-5 bg-[#F5F5F5] fixed flex justify-between items-center text-white left-0`}
+      } w-full h-24 px-5 bg-[#F5F5F5] fixed flex justify-between items-center text-white left-0 z-10`}
     >
       {/* Toggle Button */}
       <button
