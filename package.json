@@ -14,6 +14,7 @@
     "@fontsource-variable/roboto-flex": "^5.1.1",
     "@fontsource/inter": "^5.1.1",
     "@hookform/resolvers": "^3.9.0",
+    "@react-google-maps/api": "^2.20.6",
     "@reduxjs/toolkit": "^2.3.0",
     "@tailwindcss/vite": "^4.0.6",
     "antd": "^5.19.1",

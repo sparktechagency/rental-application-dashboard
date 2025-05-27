@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import CarCard from "./CarCard";
+import { Link } from "react-router-dom";
+import CarTracking from "../CarTracking/CarTracking";
 
 const AllCars = () => {
   const [activeTab, setActiveTab] = useState("Car");
@@ -138,18 +140,25 @@ const AllCars = () => {
             Car Tracking
           </button>
         </div>
-        <button className="bg-primary text-white px-6 py-3 rounded-lg flex items-center space-x-2 transition-colors">
-          <Plus size={16} />
-          <span>Add Car</span>
-        </button>
+        <Link to="/add-vehicle">
+          <button className="bg-primary text-white px-6 py-3 rounded-lg flex items-center space-x-2 transition-colors">
+            <Plus size={16} />
+            <span>Add Car</span>
+          </button>
+        </Link>
       </div>
+      {/* Tab Content */}
+      {activeTab === "Car" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {cars.map((car) => (
+            <CarCard key={car.id} car={car} />
+          ))}
+        </div>
+      ) : (
+       <CarTracking />
+      )}
 
       {/* Car Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {cars.map((car) => (
-          <CarCard key={car.id} car={car} />
-        ))}
-      </div>
     </section>
   );
 };

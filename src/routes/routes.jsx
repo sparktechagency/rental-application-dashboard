@@ -23,6 +23,7 @@ import Earning from "../component/Main/Earning/Earning";
 import AllCars from "../component/Main/AllCars/AllCars";
 import AddCar from "../component/Main/AddCar/AddCar";
 import EditCar from "../component/Main/EditCar/EditCar";
+import CarTrackingDetails from "../component/Main/CarTracking/CarTrackingDetails";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "/edit-vehicle/:id",
         element: <EditCar />,
+      },
+      {
+        path:"/car-tracking-details/:id",
+        element: <CarTrackingDetails />
       },
       {
         path: "personal-info",
