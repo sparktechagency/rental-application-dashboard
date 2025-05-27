@@ -21,6 +21,8 @@ import ErrorPage from "../component/Main/ErrorPage/ErrorPage";
 import Booking from "../component/Main/Booking/Booking";
 import Earning from "../component/Main/Earning/Earning";
 import AllCars from "../component/Main/AllCars/AllCars";
+import AddCar from "../component/Main/AddCar/AddCar";
+import EditCar from "../component/Main/EditCar/EditCar";
 
 const router = createBrowserRouter([
   {
@@ -45,12 +47,20 @@ const router = createBrowserRouter([
         element: <Booking />,
       },
       {
-        path:"/earning",
-        element:<Earning/>
+        path: "/earning",
+        element: <Earning />,
       },
       {
         path: "/vehicles",
-        element: <AllCars/>, // Placeholder for Vehicles component
+        element: <AllCars />,
+      },
+      {
+        path: "/add-vehicle",
+        element: <AddCar />
+      },
+      {
+        path: "/edit-vehicle/:id",
+        element: <EditCar />,
       },
       {
         path: "personal-info",

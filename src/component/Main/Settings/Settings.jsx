@@ -1,8 +1,7 @@
-import { Form, Modal, Select } from "antd";
+import { Form, Modal } from "antd";
 import { useState } from "react";
 import { HiOutlineLockClosed } from "react-icons/hi";
 import OTPInput from "react-otp-input";
-import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -24,16 +23,15 @@ const Settings = () => {
   const [form] = Form.useForm();
 
   // Language options
-  const languageOptions = [
-    { value: "en", label: "English" },
-    { value: "es", label: "Spanish" },
-    { value: "fr", label: "French" },
-  ];
+  // const languageOptions = [
+  //   { value: "en", label: "English" },
+  //   { value: "es", label: "Spanish" },
+  //   { value: "fr", label: "French" },
+  // ];
 
   // Settings navigation items
   const settingsItem = [
     { title: "Change password", path: "change-password" },
-    { title: "About Us", path: "about-us" },
     { title: "Privacy Policy", path: "privacy-policy" },
     { title: "Terms & Conditions", path: "terms-conditions" },
   ];
@@ -49,31 +47,31 @@ const Settings = () => {
     useResetPasswordMutation();
 
   // Language switching function
-  const switchLanguage = (lang) => {
-    try {
-      // Store selected language
-      Cookies.set("currentLanguage", lang, { expires: 30, path: "/" });
+  // const switchLanguage = (lang) => {
+  //   try {
+  //     // Store selected language
+  //     Cookies.set("currentLanguage", lang, { expires: 30, path: "/" });
 
-      // Set Google Translate cookie
-      const googleTransValue = `/en/${lang}`;
-      Cookies.set("googtrans", googleTransValue, {
-        expires: 30,
-        path: "/",
-        domain: window.location.hostname, // Dynamic domain for localhost or production
-      });
+  //     // Set Google Translate cookie
+  //     const googleTransValue = `/en/${lang}`;
+  //     Cookies.set("googtrans", googleTransValue, {
+  //       expires: 30,
+  //       path: "/",
+  //       domain: window.location.hostname, // Dynamic domain for localhost or production
+  //     });
 
-      console.log("Switching language to:", lang);
-      console.log("googtrans cookie set to:", Cookies.get("googtrans"));
-      // Delay reload to ensure cookie is set
-      setTimeout(() => {
-        window.location.reload();
-        toast.success(`Language switched to ${lang}`);
-      }, 500);
-    } catch (error) {
-      console.error("Language switch error:", error);
-      toast.error("Failed to switch language. Please try again.");
-    }
-  };
+  //     console.log("Switching language to:", lang);
+  //     console.log("googtrans cookie set to:", Cookies.get("googtrans"));
+  //     // Delay reload to ensure cookie is set
+  //     setTimeout(() => {
+  //       window.location.reload();
+  //       toast.success(`Language switched to ${lang}`);
+  //     }, 500);
+  //   } catch (error) {
+  //     console.error("Language switch error:", error);
+  //     toast.error("Failed to switch language. Please try again.");
+  //   }
+  // };
 
   // Handle navigation and modal opening
   const handleNavigate = (value) => {
@@ -180,13 +178,13 @@ const Settings = () => {
   };
 
   return (
-    <section className="w-full px-5 h-full">
+    <section className="w-full bg-[#F4F4F4] min-h-screen px-5 h-full">
       <div className="flex justify-between items-center py-6 border-b mb-4">
         <h1 className="text-2xl font-semibold">Settings</h1>
       </div>
 
       {/* Language Change Dropdown */}
-      <div className="w-full p-4 mb-2 text-sm rounded-lg border flex items-center justify-between">
+      {/* <div className="w-full p-4 mb-2 text-sm rounded-lg border flex items-center justify-between">
         <h2 className="notranslate">Change Language</h2>
         <Select
           defaultValue={Cookies.get("currentLanguage") || "en"}
@@ -204,13 +202,13 @@ const Settings = () => {
             </Select.Option>
           ))}
         </Select>
-      </div>
+      </div> */}
 
       {/* Other Settings */}
       {settingsItem.map((setting, index) => (
         <div
           key={index}
-          className="w-full p-4 mb-2 text-sm rounded-lg border flex items-center justify-between cursor-pointer"
+          className="w-full p-4 mb-2 text-sm rounded-lg border flex items-center justify-between cursor-pointer bg-white"
           onClick={() => handleNavigate(setting.path)}
         >
           <h2>{setting.title}</h2>

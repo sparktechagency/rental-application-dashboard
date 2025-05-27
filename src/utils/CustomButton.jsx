@@ -25,7 +25,7 @@ const CustomButton = ({
             alignItems: "center",
             padding: "28px 20px",
             width: "100%",
-            height: "62px",
+            height: "60px",
             gap: "10px",
             backgroundColor: "#69BB41",
             color: "#ffffff", // Ensure text color stays white

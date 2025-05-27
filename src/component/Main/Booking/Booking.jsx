@@ -310,7 +310,7 @@ const Booking = () => {
               <div
                 key={index}
                 className={`h-28 border border-gray-100 p-1 relative ${
-                  calendarEvents[day] ? "bg-[#F4FEEE] border border-primary" : ""
+                  calendarEvents[day] ? "bg-[#F4FEEE]" : ""
                 }`}
               >
                 {day && (

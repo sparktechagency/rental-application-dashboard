@@ -1,19 +1,20 @@
 import { useState } from "react";
-import { Plus, Edit } from "lucide-react";
-import { FaTrash } from "react-icons/fa6";
+import { Plus } from "lucide-react";
+import CarCard from "./CarCard";
 
 const AllCars = () => {
   const [activeTab, setActiveTab] = useState("Car");
-  const [currentPage, setCurrentPage] = useState(12);
 
   const cars = [
     {
       id: 1,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
+      make: "Luxury sedan",
+      model: "BMW 5 series 2025",
+      vin: "WBA5A7C55F0A12345",
+      licensePlate: "ABC-1234",
+      color: "#000000",
       price: "500/Day",
       status: "Available",
       statusColor: "bg-[#EEFEE6] text-gray-600",
@@ -22,10 +23,12 @@ const AllCars = () => {
       id: 2,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
-      price: "500/Day",
+      make: "Luxury sedan",
+      model: "Mercedes E-Class 2025",
+      vin: "WDDZF4KBXFA123456",
+      licensePlate: "XYZ-5678",
+      color: "#C0C0C0",
+      price: "550/Day",
       status: "Available",
       statusColor: "bg-[#EEFEE6] text-gray-600",
     },
@@ -33,10 +36,12 @@ const AllCars = () => {
       id: 3,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
-      price: "500/Day",
+      make: "Luxury sedan",
+      model: "Audi A6 2025",
+      vin: "WAUZZZ4G5FN123457",
+      licensePlate: "DEF-9012",
+      color: "#FFFFFF",
+      price: "520/Day",
       status: "Available",
       statusColor: "bg-[#EEFEE6] text-gray-600",
     },
@@ -44,10 +49,12 @@ const AllCars = () => {
       id: 4,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
-      price: "500/Day",
+      make: "Luxury sedan",
+      model: "Lexus ES 2025",
+      vin: "JT8BF28G5F0123458",
+      licensePlate: "GHI-3456",
+      color: "#0000FF",
+      price: "480/Day",
       status: "Available",
       statusColor: "bg-[#EEFEE6] text-gray-600",
     },
@@ -55,9 +62,11 @@ const AllCars = () => {
       id: 5,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
+      make: "Luxury sedan",
+      model: "BMW 5 series 2025",
+      vin: "WBA5A7C55F0A12349",
+      licensePlate: "JKL-7890",
+      color: "#808080",
       price: "500/Day",
       status: "Rental",
       statusColor: "bg-yellow-100 text-yellow-700",
@@ -67,10 +76,12 @@ const AllCars = () => {
       id: 6,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
-      price: "500/Day",
+      make: "Luxury sedan",
+      model: "Mercedes E-Class 2025",
+      vin: "WDDZF4KBXFA123460",
+      licensePlate: "MNO-1234",
+      color: "#FF0000",
+      price: "550/Day",
       status: "Maintenance",
       statusColor: "bg-red-100 text-red-700",
       actions: ["Not Available", "Maintenance"],
@@ -79,10 +90,12 @@ const AllCars = () => {
       id: 7,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
-      price: "500/Day",
+      make: "Luxury sedan",
+      model: "Audi A6 2025",
+      vin: "WAUZZZ4G5FN123461",
+      licensePlate: "PQR-5678",
+      color: "#000000",
+      price: "520/Day",
       status: "Maintenance",
       statusColor: "bg-red-100 text-red-700",
       actions: ["Not Available", "Maintenance"],
@@ -91,17 +104,20 @@ const AllCars = () => {
       id: 8,
       image:
         "https://iter-bene.s3.eu-north-1.amazonaws.com/3e8fabf0591db2ad3fb1b71394e2e18336fe3b5e.png",
-      title: "Luxury sedan",
-      subtitle: "BMW 5 series 2025",
-      seats: 5,
-      price: "500/Day",
+      make: "Luxury sedan",
+      model: "Lexus ES 2025",
+      vin: "JT8BF28G5F0123462",
+      licensePlate: "STU-9012",
+      color: "#C0C0C0",
+      price: "480/Day",
       status: "Rental",
       statusColor: "bg-yellow-100 text-yellow-700",
+      actions: ["Rental", "Maintenance"],
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <section className="w-full px-5  space-y-5 bg-[#F5F5F5]">
       {/* Header */}
       <div className="flex justify-between items-center mb-8 ">
         <div className="flex items-center space-x-4 bg-white px-4 py-3 rounded-lg shadow-sm">
@@ -109,7 +125,7 @@ const AllCars = () => {
             onClick={() => setActiveTab("Car")}
             className={`${
               activeTab === "Car" ? "bg-[#F4F4F4]" : ""
-            } text-gray-950 px-7 py-3 rounded-lg`}
+            } text-gray-950 px-10 py-3 rounded-lg`}
           >
             Car
           </button>
@@ -131,56 +147,10 @@ const AllCars = () => {
       {/* Car Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {cars.map((car) => (
-          <div
-            key={car.id}
-            className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
-          >
-            {/* Car Image */}
-            <div className="w-full h-[170px] bg-[#DDDDDD] flex items-center justify-center p-5 relative mb-4">
-              <img
-                src={car.image}
-                alt={car.title}
-                className="w-[200px] h-[100px]"
-              />
-              <div className="p-4 pb-2 absolute top-0 right-0">
-                <span
-                  className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${car.statusColor}`}
-                >
-                  {car.status}
-                </span>
-              </div>
-            </div>
-
-            {/* Car Details */}
-            <div className="px-4 pb-4">
-              <h3 className="font-semibold text-gray-800 mb-1 text-xl">
-                {car.title}
-              </h3>
-              <p className="text-lg text-gray-600 my-2">{car.subtitle}</p>
-
-              <div className="flex items-center justify-between text-sm text-gray-600 mt-4">
-                <div className="flex text-lg items-center space-x-1">
-                  <span>🪑</span>
-                  <span>Seats: {car.seats}</span>
-                </div>
-                <span className="font-semibold text-lg">Price: {car.price}</span>
-              </div>
-              <div className="flex items-center justify-between mt-7">
-                <div className="flex items-center gap-2 ">
-                  <button className="size-10 flex justify-center items-center border border-gray-200  rounded">
-                    <Edit size={22} className="text-primary mx-auto" />
-                  </button>
-                  <button className="size-10 flex justify-center items-center border border-gray-200  rounded">
-                    <FaTrash size={18} className="text-rose-500 mx-auto" />
-                  </button>
-                </div>
-                <button className="bg-[#F4F4F4] text-gray-700 px-7 py-3 rounded-xl text-sm font-semibold">Unpublish</button>
-              </div>
-            </div>
-          </div>
+          <CarCard key={car.id} car={car} />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
