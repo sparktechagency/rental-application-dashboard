@@ -7,7 +7,7 @@ import { useGetAllBookingsQuery } from "../../../redux/features/booking/bookingA
 
 const { Option } = Select;
 
-const Booking = () => {
+const ManualBooking = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(7);
   const [filterDate, setFilterDate] = useState("Today"); // For table
@@ -21,16 +21,13 @@ const Booking = () => {
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case "booked":
-        return "#CCCB85";
-      case "ongoing":
-        return "#DBFDCB";
-      case "cancelRequest":
-        return "#FBBC05";
+      case "confirmed":
+        return "green";
+      case "pending":
+        return "orange";
       case "cancelled":
-        return "#F9C5C0";
+        return "red";
       case "completed":
-        return "#69BB41";
       case "returned":
         return "green";
       case "active":
@@ -51,7 +48,7 @@ const Booking = () => {
       email: booking?.user?.email,
       bookingDate: `${moment(booking?.pickupDate).format(
         "MMM DD, YYYY"
-      )}`,
+      )} - ${moment(booking?.returnDate).format("MMM DD, YYYY")}`,
       status: booking?.status,
       pickupDate: booking?.pickupDate,
       returnDate: booking?.returnDate,
@@ -323,4 +320,4 @@ const Booking = () => {
   );
 };
 
-export default Booking;
+export default ManualBooking;
