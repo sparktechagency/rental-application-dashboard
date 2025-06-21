@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Table, Select, Tag } from "antd";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useGetAllBookingsQuery } from "../../../redux/features/booking/bookingApi";
 
 const { Option } = Select;
 
@@ -142,6 +143,11 @@ const Booking = () => {
   const [filterDate, setFilterDate] = useState("Today"); // For table
   const [calendarFilter, setCalendarFilter] = useState("overdue"); // For calendar
   const [selectedDate, setSelectedDate] = useState(new Date(2025, 4, 1)); // Start of May 2025
+
+  //get all bookings 
+  const {data:responseData} = useGetAllBookingsQuery();
+  const allBookings = responseData?.data;
+
 
   const monthNames = [
     "January",
@@ -353,6 +359,8 @@ const Booking = () => {
     );
   };
 
+
+  console.log("All Bookings", allBookings);
   return (
     <section className="w-full px-5 space-y-5">
       {renderCalendar()}

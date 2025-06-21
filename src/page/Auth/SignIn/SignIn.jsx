@@ -17,22 +17,22 @@ const SignIn = () => {
   const handleSubmit = async (values) => {
     const { email, password } = values;
     try {
-      const res = await login({ userName: email, password });
+      const res = await login({ email, password });
       if (res.error) {
         toast.error(res?.error?.data?.message);
       }
       if (res?.data) {
         if (
-          (!res?.data?.data?.attributes?.user?.role === "admin") |
-          (!res?.data?.data?.attributes?.user?.role === "super_admin")
+          (!res?.data?.data?.user?.role === "admin") |
+          (!res?.data?.data?.user?.role === "super_admin")
         ) {
           toast.error("Only Admin Can Access This Dashboard");
           return;
         }
         dispatch(
           loggedUser({
-            token: res.data.data.attributes?.tokens?.accessToken,
-            user: res.data.data.attributes?.user,
+            token: res.data.data?.token,
+            user: res.data.data?.user,
           })
         );
         toast.success(res.data.message);
