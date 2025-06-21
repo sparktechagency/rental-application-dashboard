@@ -20,7 +20,7 @@ const Status = () => {
         <div className="space-y-2">
           <h1 className="font-semibold text-[#9E9E9E]">Earnings</h1>
           <h1 className="text-2xl md:text-3xl font-bold text-primary notranslate">
-            € {responseData?.totalEarnings || 0}
+            € {responseData?.totalBalance || 0}
           </h1>
         </div>
       </div>
@@ -34,7 +34,7 @@ const Status = () => {
              Rentals Out
           </h1>
           <h1 className="text-2xl md:text-3xl font-bold text-primary notranslate">
-            {responseData?.totalRegisterUsers || 0}
+            {responseData?.totalRentalOuts || 0}
           </h1>
         </div>
       </div>
@@ -46,7 +46,7 @@ const Status = () => {
         <div className="space-y-2">
           <h1 className="font-semibold text-[#9E9E9E]">Scheduled Pickups</h1>
           <h1 className="text-2xl md:text-3xl font-bold text-[#FBBC05] notranslate">
-            {responseData?.totalFreeUsersCount || 0}
+            {responseData?.totalScheduledPickups || 0}
           </h1>
         </div>
       </div>
@@ -58,7 +58,7 @@ const Status = () => {
         <div className="space-y-2">
           <h1 className="font-semibold text-[#9E9E9E]">Overdue rentals</h1>
           <h1 className="text-2xl md:text-3xl font-bold text-[#EB4335] notranslate">
-            {responseData?.totalPremiumUsers || 0}
+            {responseData?.overdueRentals || 0}
           </h1>
         </div>
       </div>

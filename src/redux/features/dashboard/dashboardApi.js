@@ -7,7 +7,7 @@ const dashboardApi = baseApi.injectEndpoints({
         url: "/dashboard/overview",
         method: "GET",
       }),
-      transformResponse: (response) => response?.data?.attributes,
+      transformResponse: (response) => response?.data,
     }),
     getIncomeRatio: builder.query({
       query: (year) => ({

@@ -1,5 +1,5 @@
 import Status from "../../component/Main/Dashboard/Status";
-import Charts from "../../component/Main/Dashboard/Charts";
+import Charts from "../../component/Main/Dashboard/Charts"
 import RecentBooking from "../../component/Main/Dashboard/RecentBooking";
 const DashboardHome = () => {
   return (

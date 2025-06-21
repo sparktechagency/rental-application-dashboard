@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ConfigProvider, Table } from "antd";
-import { BadgeCent } from "lucide-react";
 
 const Earning = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,14 +80,6 @@ const Earning = () => {
     },
   ];
 
-  // Demo stats data
-  const demoStats = {
-    totalProfit: 15750,
-    totalExpenses: 8450,
-    netProfit: 7300,
-    unpaidPayments: 2150,
-  };
-
   const handlePageChange = (page) => setCurrentPage(page);
 
   const columns = [
@@ -148,7 +139,7 @@ const Earning = () => {
 
   return (
     <section className="w-full min-h-screen px-5 bg-[#F5F5F5]">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5 py-5 mb-5">
+      {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-5 py-5 mb-5">
         <div className="w-full min-h-36 flex items-center gap-5 p-5 rounded-xl bg-[#FEFEFE]">
           <div className="size-20 rounded-full p-5 bg-[#EEFEE6] flex justify-center items-center">
             <BadgeCent className="size-8 text-primary" />
@@ -193,7 +184,7 @@ const Earning = () => {
             </h1>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="bg-white rounded-lg mb-5">
         <h1 className="text-xl md:text-2xl font-bold p-5 text-gray-600">
           Recent Transactions

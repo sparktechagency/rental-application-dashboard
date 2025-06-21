@@ -20,10 +20,10 @@ import PrivacyPolicy from "../page/PrivacyPolicy/PrivacyPolicy";
 import ErrorPage from "../component/Main/ErrorPage/ErrorPage";
 import Booking from "../component/Main/Booking/Booking";
 import Earning from "../component/Main/Earning/Earning";
-import AllCars from "../component/Main/AllCars/AllCars";
 import AddCar from "../component/Main/AddCar/AddCar";
 import EditCar from "../component/Main/EditCar/EditCar";
 import CarTrackingDetails from "../component/Main/CarTracking/CarTrackingDetails";
+import AllCars from "../component/Main/AllCars/AllCars";
 
 const router = createBrowserRouter([
   {
