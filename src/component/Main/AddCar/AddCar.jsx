@@ -3,22 +3,18 @@ import { Plus, X, ChevronDown } from "lucide-react";
 import { Form } from "antd";
 import CustomInput from "../../../utils/CustomInput";
 import CustomButton from "../../../utils/CustomButton";
+import { useAddCarMutation } from "../../../redux/features/car/carApi";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const AddCarForm = () => {
-  const [formData, setFormData] = useState({
-    make: "",
-    model: "",
-    vin: "",
-    color: "",
-    licensePlate: "",
-    description: "",
-    price: "",
-    taxes: "Taxes",
-  });
-
+  const [color, setColor] = useState("Black");
   const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [showColorDropdown, setShowColorDropdown] = useState(false);
+  const navigate = useNavigate();
+
+  // add car mutation
+  const [addCar, { isLoading }] = useAddCarMutation();
 
   // Color options
   const colorOptions = [
@@ -36,13 +32,6 @@ const AddCarForm = () => {
     "Purple",
     "Other",
   ];
-
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -68,52 +57,52 @@ const AddCarForm = () => {
     setImages((prev) => prev.filter((img) => img.id !== imageId));
   };
 
-  const handlePublish = async () => {
-    if (!formData.make || !formData.model || !formData.vin) {
-      alert("Please fill all required fields");
+  const handlePublish = async (values) => {
+    if (!values.make || !values.model || !values.vin) {
+      toast.error("Please fill all required fields");
       return;
     }
-
-    setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      alert("Car published successfully!");
-
-      // Reset form
-      setFormData({
-        make: "",
-        model: "",
-        vin: "",
-        color: "",
-        licensePlate: "",
-        description: "",
-        price: "",
-        taxes: "Taxes",
-      });
-      setImages([]);
+      const newFormData = new FormData();
+      const data = JSON.stringify({...values, color });
+      newFormData.append("data", data);
+      images.forEach((image) => {
+        newFormData.append("image", image.file);
+      })
+      await addCar(newFormData).unwrap();
+      toast.success("Car added successfully");
+      navigate("/vehicles");
     } catch (error) {
-      alert("Failed to publish car");
-    } finally {
-      setLoading(false);
+      console.log("Error adding car:", error);
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
   return (
     <div className="w-full px-5 space-y-5 bg-[#F5F5F5]">
-      <Form layout="vertical" className="w-full space-y-8">
+      <Form onFinish={handlePublish} layout="vertical" className="w-full space-y-8">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
           <h2 className="text-lg font-medium text-gray-900 mb-6">
             Basic Information
           </h2>
           {/* Make */}
-          <Form.Item name="make" rules={[{ required: true, message: "Please enter the make" }]}>
+          <Form.Item
+            name="make"
+            rules={[{ required: true, message: "Please enter the make" }]}
+          >
             <CustomInput type="text" placeholder="Make" />
           </Form.Item>
-          <Form.Item name="model" rules={[{ required: true, message: "Please enter the model" }]}>
+          <Form.Item
+            name="model"
+            rules={[{ required: true, message: "Please enter the model" }]}
+          >
             <CustomInput type="text" placeholder="Model" />
           </Form.Item>
           {/* Vin */}
-          <Form.Item name="vin" rules={[{ required: true, message: "Please enter the VIN" }]}>
+          <Form.Item
+            name="vin"
+            rules={[{ required: true, message: "Please enter the VIN" }]}
+          >
             <CustomInput type="text" placeholder="Vin" />
           </Form.Item>
           {/* Color */}
@@ -122,7 +111,7 @@ const AddCarForm = () => {
               className="w-full px-4 py-3 flex justify-between items-center text-[16px] border bg-[#F4F4F4]  text-gray-700 rounded-lg cursor-pointer"
               onClick={() => setShowColorDropdown(!showColorDropdown)}
             >
-              <span>{formData.color || "Select color"}</span>
+              <span>{color || "Select color"}</span>
               <ChevronDown size={16} />
             </div>
             {showColorDropdown && (
@@ -132,7 +121,7 @@ const AddCarForm = () => {
                     key={color}
                     className="px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700"
                     onClick={() => {
-                      handleInputChange("color", color);
+                      setColor(color);
                       setShowColorDropdown(false);
                     }}
                   >
@@ -143,8 +132,46 @@ const AddCarForm = () => {
             )}
           </div>
           {/* License Plate */}
-          <Form.Item name="licensePlate" rules={[{ required: true, message: "Please enter the license plate" }]}>
+          <Form.Item
+            name="licensePlate"
+            rules={[
+              { required: true, message: "Please enter the license plate" },
+            ]}
+          >
             <CustomInput type="text" placeholder="License Plate" />
+          </Form.Item>
+        </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+          <h2 className="text-lg font-medium text-gray-900 mb-6">
+            Additional Information
+          </h2>
+          {/* Doors */}
+          <Form.Item
+            name="doors"
+            rules={[{ required: true, message: "Please enter the doors" }]}
+          >
+            <CustomInput type="text" placeholder="Doors" />
+          </Form.Item>
+          {/* Camera */}
+          <Form.Item
+            name="camera"
+            rules={[{ required: true, message: "Please enter the the car camera" }]}
+          >
+            <CustomInput type="text" placeholder="Camera" />
+          </Form.Item>
+          {/* Bluetooth */}
+          <Form.Item
+            name="bluetooth"
+            rules={[{ required: true, message: "Please enter the the car bluetooth" }]}
+          >
+            <CustomInput type="text" placeholder="Bluetooth" />
+          </Form.Item>
+          {/* seats */}
+          <Form.Item
+            name="seats"
+            rules={[{ required: true, message: "Please enter the the car seats" }]}
+          >
+            <CustomInput type="text" placeholder="Seats" />
           </Form.Item>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
@@ -231,12 +258,11 @@ const AddCarForm = () => {
           </Form.Item>
         </div>
         <CustomButton
-          type="primary"
+          type="submit"
           className="w-full"
-          onClick={handlePublish}
-          loading={loading}
+          loading={isLoading}
         >
-          {loading ? "Publishing..." : "Publish Car"}
+          {isLoading ? "Publishing..." : "Publish Car"}
         </CustomButton>
       </Form>
     </div>
