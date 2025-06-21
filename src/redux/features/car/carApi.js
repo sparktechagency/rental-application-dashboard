@@ -7,7 +7,7 @@ const carApi = baseApi.injectEndpoints({
         url: "/car",
       }),
       providesTags: ["Car"],
-      transformResponse: (response) => response?.data?.attributes,
+      transformResponse: (response) => response?.data,
     }),
     addCar: builder.mutation({
       query: (data) => ({
@@ -24,21 +24,20 @@ const carApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Car"],
-      transformResponse: (response) => response?.data?.attributes,
+      transformResponse: (response) => response?.data,
     }),
     updateCar: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/car/${id}`,
-        method: "PATCH",
+        url: `/car/update/${id}`,
+        method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Car"],
-      transformResponse: (response) => response.data,
+      invalidatesTags: ["Car"]
     }),
     deleteCar: builder.mutation({
       query: (id) => ({
         url: `/car/${id}`,
-        method: "DELETE",
+        method: "POST",
       }),
       invalidatesTags: ["Car"],
     }),
