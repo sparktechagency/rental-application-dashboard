@@ -122,6 +122,7 @@ const TotalRevenueChart = () => {
       ? `Monthly Revenue for ${selectedYear}`
       : `Yearly Revenue (${selectedYear - 5} - ${selectedYear + 5})`;
 
+
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6 mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">

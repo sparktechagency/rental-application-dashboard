@@ -14,6 +14,7 @@ const earningApi = baseApi.injectEndpoints({
         method: "GET",
         params: { period, year, month },
       }),
+      transformResponse: (response) => response?.data,
     }),
   }),
 });
