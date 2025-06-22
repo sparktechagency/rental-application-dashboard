@@ -19,7 +19,7 @@ const Notification = () => {
     }
   }, [notificationData]);
 
-  const totalResults = notifications?.pagination?.totalNotifications || 0;
+  const totalResults = notificationData?.pagination?.totalNotifications || 0;
 
   const onPageChange = (page) => {
     setCurrentPage(page);

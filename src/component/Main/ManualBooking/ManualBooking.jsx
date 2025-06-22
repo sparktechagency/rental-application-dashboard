@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Table, Tag } from "antd";
-import { Eye, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useGetManualBookingsQuery } from "../../../redux/features/booking/bookingApi";
@@ -101,7 +101,7 @@ const ManualBooking = () => {
           to={`/booking/${record.key}`}
           className="text-primary font-medium"
         >
-          <Eye />
+          Track
         </Link>
       ),
     },
