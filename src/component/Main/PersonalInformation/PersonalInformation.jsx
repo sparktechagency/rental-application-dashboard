@@ -1,6 +1,5 @@
 import { IoChevronBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { imageBaseUrl } from "../../../config/imageBaseUrl";
 import { useSelector } from "react-redux";
 import { Form } from "antd";
 import { useEffect } from "react";
@@ -12,9 +11,9 @@ const PersonalInformation = () => {
   useEffect(() => {
     if (user) {
       form.setFieldsValue({
-        fullName: user?.fullName,
-        email: user?.email,
-        phoneNumber: user?.phoneNumber,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        email: user?.email
       });
     }
   }, [user, form]);
@@ -41,7 +40,7 @@ const PersonalInformation = () => {
         <div className="w-full h-96 border col-span-full md:col-span-3 rounded-lg flex justify-center items-center flex-col gap-5">
           <img
             className="size-32 rounded-full mx-auto"
-            src={`${imageBaseUrl}${user?.profileImage?.imageUrl}`}
+            src={`${user?.profileImage}`}
             alt=""
           />
 
@@ -55,22 +54,17 @@ const PersonalInformation = () => {
           layout="vertical"
           className="w-full col-span-full md:col-span-9 space-y-6 mt-10"
         >
-          {/* Full Name */}
-          <Form.Item label="Full Name" name="fullName">
-            <CustomInput placeholder="Enter your full name" />
+           {/* first Name */}
+          <Form.Item label="First Name" name="firstName">
+            <CustomInput placeholder="Enter your first name" />
+          </Form.Item>
+          {/* Last Name */}
+          <Form.Item label="Last Name" name="lastName">
+            <CustomInput placeholder="Enter your last name" />
           </Form.Item>
           {/* Email */}
           <Form.Item label="Email" name="email">
             <CustomInput placeholder="Enter your email" readOnly />
-          </Form.Item>
-
-          {/* Phone Number */}
-          <Form.Item label="Phone Number" name="phoneNumber">
-            <CustomInput
-              type="number"
-              placeholder="Enter your phone number"
-              readOnly
-            />
           </Form.Item>
         </Form>
       </div>

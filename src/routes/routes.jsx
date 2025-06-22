@@ -24,6 +24,8 @@ import AddCar from "../component/Main/AddCar/AddCar";
 import EditCar from "../component/Main/EditCar/EditCar";
 import CarTrackingDetails from "../component/Main/CarTracking/CarTrackingDetails";
 import AllCars from "../component/Main/AllCars/AllCars";
+import ManualBooking from "../component/Main/ManualBooking/ManualBooking";
+import AddManualBooking from "../component/Main/AddManualBooking/AddManualBooking";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
       {
         path: "booking",
         element: <Booking />,
+      },
+      {
+        path: "/manual-booking",
+        element: <ManualBooking />,
+      },
+      {
+        path: "/add-manual-booking",
+        element: <AddManualBooking />,
       },
       {
         path: "/earning",

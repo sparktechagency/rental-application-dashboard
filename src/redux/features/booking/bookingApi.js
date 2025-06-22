@@ -8,7 +8,24 @@ const bookingApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    addManualBooking: builder.mutation({
+      query: (data) => ({
+        url: "/booking/manual",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getManualBookings: builder.query({
+      query: () => ({
+        url: "/booking/manual",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllBookingsQuery } = bookingApi;
+export const {
+  useGetAllBookingsQuery,
+  useAddManualBookingMutation,
+  useGetManualBookingsQuery,
+} = bookingApi;

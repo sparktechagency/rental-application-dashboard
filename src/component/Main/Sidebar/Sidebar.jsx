@@ -21,6 +21,11 @@ const sidebarItems = [
     icon: <CalendarCheck className="size-7" />,
   },
   {
+    path: "/manual-booking",
+    name: "Manual Booking",
+    icon: <CalendarCheck className="size-7" />,
+  },
+  {
     path: "/earning",
     name: "Earning",
     icon: <IoWalletOutline className="size-7" />,

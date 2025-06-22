@@ -41,9 +41,9 @@ const CarCard = ({ car }) => {
         <img src={image} alt={`${make} ${model}`} className="w-[200px] h-[100px]" />
         <div className="p-4 pb-2 absolute top-0 right-0">
           <span
-            className={`inline-block px-3 py-1.5 rounded-full text-xs font-medium`}
+            className={`inline-block px-3 py-1.5 rounded-full text-xs font-medium border ${status === "available" ? "bg-[#EEFEE6] text-green-800 border-[#EEFEE6]" : "bg-red-100 text-red-800 border-red-600"} text-gray-600`}
           >
-            {status}
+            {status?.slice(0, 1).toUpperCase() + status?.slice(1)}
           </span>
         </div>
       </div>
@@ -62,7 +62,7 @@ const CarCard = ({ car }) => {
           <div style={{ backgroundColor: color }} className={`size-4 rounded-full mt-2`}></div>
         </div>
 
-        <span className="font-semibold text-lg block mt-2">Price: {price}</span>
+        <span className="font-semibold text-lg block mt-2">Price: ${price}</span>
 
         {/* Additional Car Info */}
         <div className="mt-3 text-sm text-gray-600">
@@ -88,7 +88,7 @@ const CarCard = ({ car }) => {
             </button>
           </div>
           <button className="bg-[#F4F4F4] text-gray-700 px-7 py-3 rounded-xl text-sm font-semibold">
-            {status ? status : "Unpublish"}
+            {status ? status?.slice(0, 1).toUpperCase() + status?.slice(1) : "Unpublish"}
           </button>
         </div>
       </div>

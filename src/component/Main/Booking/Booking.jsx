@@ -15,7 +15,7 @@ const Booking = () => {
   const [selectedDate, setSelectedDate] = useState(new Date()); // Current month
 
   //get all bookings
-  const { data: responseData, isLoading, error } = useGetAllBookingsQuery();
+  const { data: responseData, isLoading, } = useGetAllBookingsQuery();
   const allBookings = responseData?.data || [];
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -51,7 +51,7 @@ const Booking = () => {
       email: booking?.user?.email,
       bookingDate: `${moment(booking?.pickupDate).format(
         "MMM DD, YYYY"
-      )}`,
+      )} - ${moment(booking?.returnDate).format("MMM DD, YYYY")}`,
       status: booking?.status,
       pickupDate: booking?.pickupDate,
       returnDate: booking?.returnDate,
@@ -267,26 +267,6 @@ const Booking = () => {
     );
   };
 
-  if (isLoading) {
-    return (
-      <section className="w-full px-5 space-y-5">
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <div className="text-center">Loading bookings...</div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="w-full px-5 space-y-5">
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <div className="text-center text-red-600">Error loading bookings</div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="w-full px-5 space-y-5">
       {renderCalendar()}
@@ -305,6 +285,7 @@ const Booking = () => {
         <div className="p-6">
           <Table
             columns={columns}
+            loading={isLoading}
             dataSource={transformedBookings}
             pagination={{
               position: ["bottomCenter"],

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
-import { imageBaseUrl } from "../../../config/imageBaseUrl";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { GrNotification } from "react-icons/gr";
 import {
@@ -112,13 +111,13 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
             className="flex items-center justify-end gap-4 p-1 md:p-4 "
           >
             <img
-              src={`${imageBaseUrl}${user?.profileImage?.imageUrl}`}
+              src={`${user?.profileImage}`}
               className="size-12 rounded-full cursor-pointer object-cover"
               alt="User Profile"
             />
             <div>
               <p className="whitespace-nowrap truncate cursor-pointer text-gray-950 text-base font-semibold">
-                {user?.fullName}
+                {user?.firstName} {user?.lastName}
               </p>
               <p className="text-gray-500 text-sm">
                 {user?.role === "admin" || user?.role === "super_admin"
