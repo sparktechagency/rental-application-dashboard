@@ -13,52 +13,17 @@ const notificationApi = baseApi.injectEndpoints({
           });
         }
         return {
-          url: `/notification/admin-notifications`,
+          url: `/notification`,
           method: "GET",
           params: params.toString(),
         };
       },
-      transformResponse: (response) => response?.data?.attributes,
+      transformResponse: (response) => response?.data,
       providesTags: ["Notification"],
-    }),
-    getSingleNotification: build.query({
-      query: (id) => ({
-        url: `/notification/${id}`,
-        method: "GET",
-      }),
-      transformResponse: (response) => response?.data?.attributes,
-      providesTags: ["Notification"],
-    }),
-    getUnviewNotifications: build.query({
-      query: () => ({
-        url: `/notification/unview-notification-count`,
-        method: "GET",
-      }),
-      transformResponse: (response) => response?.data?.attributes,
-      providesTags: ["Notification"],
-    }),
-    viewAllNotification: build.mutation({
-      query: () => ({
-        url: `/notification/view-all-notifications`,
-        method: "POST",
-      }),
-      transformResponse: (response) => response?.data?.attributes,
-      invalidatesTags: ["Notification"],
-    }),
-    clearAllNotification: build.mutation({
-      query: () => ({
-        url: `/notification/clear-all-notifications`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Notification"],
-    }),
+    })
   }),
 });
 
 export const {
-  useGetAdminNotificationQuery,
-  useGetSingleNotificationQuery,
-  useGetUnviewNotificationsQuery,
-  useViewAllNotificationMutation,
-  useClearAllNotificationMutation,
+  useGetAdminNotificationQuery
 } = notificationApi;

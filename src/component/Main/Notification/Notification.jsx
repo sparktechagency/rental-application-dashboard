@@ -2,13 +2,6 @@ import { Pagination } from "antd";
 import { useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useGetAdminNotificationQuery } from "../../../redux/features/notification/notificationApi";
-import { io } from "socket.io-client";
-// Initialize Socket.IO client
-const socket = io("http://10.0.80.220:8082", {
-  reconnection: true,
-  reconnectionAttempts: 5,
-  reconnectionDelay: 1000,
-});
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,26 +15,11 @@ const Notification = () => {
 
   useEffect(() => {
     if (notificationData) {
-      setNotifications(notificationData.results);
+      setNotifications(notificationData?.notifications);
     }
   }, [notificationData]);
 
-  useEffect(() => {
-    socket.on("admin-notification", (data) => {
-      if (data?.data?.role === "admin" && data?.data?.viewStatus === false) {
-        setNotifications((prevNotifications) => [
-          data.data,
-          ...prevNotifications,
-        ]);
-      }
-    });
-
-    return () => {
-      socket.off("admin-notification");
-    };
-  }, []);
-
-  const totalResults = notifications?.length || 0;
+  const totalResults = notifications?.pagination?.totalNotifications || 0;
 
   const onPageChange = (page) => {
     setCurrentPage(page);
@@ -66,7 +44,7 @@ const Notification = () => {
                 <IoMdNotificationsOutline size={30} />
               </div>
               <div>
-                <p className="font-semibold">{item.message}</p>
+                <p className="font-semibold">{item?.msg}</p>
                 <p className="text-gray-500">
                   {new Date(item.createdAt).toLocaleString()}{" "}
                   {/* Display full date and time */}

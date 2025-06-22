@@ -114,7 +114,7 @@ const router = createBrowserRouter([
         element: <EditAboutUs />,
       },
       {
-        path: "/notification",
+        path: "/notifications",
         element: <Notification />,
       },
     ],
