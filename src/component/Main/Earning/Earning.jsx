@@ -1,86 +1,42 @@
-import { useState } from "react";
-import { ConfigProvider, Table } from "antd";
+import { useEffect, useState } from "react";
+import { ConfigProvider, Modal, Table } from "antd";
+import { useGetAllEarningsQuery } from "../../../redux/features/earning/earningApi";
 
 const Earning = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [allEarnings, setAllEarnings] = useState([]);
+  const [totalResult, setTotalResult] = useState(0);
+  const [transactionDetails, setTransactionDetails] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Demo data matching the image
-  const demoTransactions = [
-    {
-      key: "34567890",
-      transactionId: "34567890",
-      userName: "Sofia",
-      email: "Emily White",
-      amount: "$400",
-      date: "19 Apr 2024",
-      status: "Active",
-    },
-    {
-      key: "12345678",
-      transactionId: "12345678",
-      userName: "Enrique",
-      email: "John Doe",
-      amount: "$250",
-      date: "18 Apr 2024",
-      status: "Active",
-    },
-    {
-      key: "45678901",
-      transactionId: "45678901",
-      userName: "Liam",
-      email: "Alice Johnson",
-      amount: "$500",
-      date: "20 Apr 2024",
-      status: "Active",
-    },
-    {
-      key: "23456789",
-      transactionId: "23456789",
-      userName: "Carlos",
-      email: "Robert Brown",
-      amount: "$150",
-      date: "18 Apr 2024",
-      status: "Block",
-    },
-    {
-      key: "56789012",
-      transactionId: "56789012",
-      userName: "Olivia",
-      email: "Chris Lee",
-      amount: "$350",
-      date: "21 Apr 2024",
-      status: "Active",
-    },
-    {
-      key: "87654321",
-      transactionId: "87654321",
-      userName: "Maria",
-      email: "Jane Smith",
-      amount: "$300",
-      date: "17 Apr 2024",
-      status: "Active",
-    },
-    {
-      key: "67890123",
-      transactionId: "67890123",
-      userName: "Noah",
-      email: "Emma Davis",
-      amount: "$450",
-      date: "22 Apr 2024",
-      status: "Banned",
-    },
-    {
-      key: "78901234",
-      transactionId: "78901234",
-      userName: "Ava",
-      email: "David Wilson",
-      amount: "$600",
-      date: "23 Apr 2024",
-      status: "Active",
-    },
-  ];
+  const { data: responseData, isLoading } = useGetAllEarningsQuery({
+    page: currentPage,
+    limit: 10,
+  });
+
+  useEffect(() => {
+    if (responseData) {
+      const { data, pagination } = responseData;
+      setAllEarnings(data?.payments);
+      setTotalResult(pagination?.totalItem);
+    }
+  }, [responseData]);
 
   const handlePageChange = (page) => setCurrentPage(page);
+
+  const handleViewDetails = (transaction) => {
+    setTransactionDetails(transaction);
+    setIsModalOpen(true);
+  };
+
+  const dataSource = allEarnings?.map((earning, index) => ({
+    key: index + 1,
+    transactionId: earning?._id,
+    userName: `${earning?.userName} ` || "N/A",
+    email: earning?.email || "N/A",
+    amount: earning?.amount || "N/A",
+    date: earning?.date ? earning?.date : "N/A",
+  }));
 
   const columns = [
     {
@@ -103,33 +59,29 @@ const Earning = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      render: (text) => (
-        <span className="text-gray-600">{text}</span>
-      ),
+      render: (text) => <span className="text-gray-600">{text}</span>,
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
       render: (text) => (
-        <span className="text-gray-700 font-semibold">{text}</span>
+        <span className="text-gray-700 font-semibold">${text}</span>
       ),
     },
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      render: (text) => (
-        <span className="text-gray-600">{text}</span>
-      ),
+      render: (text) => <span className="text-gray-600">{text}</span>,
     },
     {
       title: "View",
       key: "view",
       render: (_, record) => (
-        <button 
+        <button
           className="px-5 py-1 rounded-md bg-primary text-white hover:bg-primary/90 transition-colors"
-          onClick={() => console.log(`View user ${record.key}`)}
+          onClick={() => handleViewDetails(record)}
         >
           View
         </button>
@@ -200,21 +152,71 @@ const Earning = () => {
           }}
         >
           <Table
-            loading={false}
+            loading={isLoading}
             pagination={{
               position: ["bottomCenter"],
               current: currentPage,
-              total: demoTransactions.length,
-              pageSize: 10,
+              total: totalResult,
               onChange: handlePageChange,
             }}
             columns={columns}
-            dataSource={demoTransactions}
+            dataSource={dataSource}
             rowKey="key"
             scroll={{ x: "max-content" }}
           />
         </ConfigProvider>
       </div>
+      <Modal
+        open={isModalOpen}
+        centered
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+        width={500}
+      >
+        {transactionDetails && (
+          <div className="p-4">
+            <h1 className="text-2xl font-bold text-center">Transaction Details</h1>
+            {/* User Details */}
+            <div className="space-y-7 mt-8 ">
+              {/* Name */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-gray-500">Name : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  {transactionDetails?.userName}
+                </p>
+              </div>
+              {/* Email */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-gray-500">Email : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  {transactionDetails.email}
+                </p>
+              </div>
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-gray-500">Amount : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  ${transactionDetails?.amount}
+                </p>
+              </div>
+              {/*  Date */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-gray-500"> Date : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  {transactionDetails.date}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </section>
   );
 };
