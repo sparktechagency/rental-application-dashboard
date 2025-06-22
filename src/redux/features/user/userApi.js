@@ -16,12 +16,11 @@ const userApi = baseApi.injectEndpoints({
         }
 
         return {
-          url: "/user/admin-get-users",
+          url: "/user/all",
           method: "GET",
           params,
         };
       },
-      transformResponse: (response) => response?.data,
       providesTags: ["User"],
     }),
     getUserById: builder.query({
