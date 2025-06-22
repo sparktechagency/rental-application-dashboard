@@ -98,7 +98,7 @@ const ManualBooking = () => {
       width: 100,
       render: (_, record) => (
         <Link
-          to={`/booking/${record.key}`}
+          to={`/car-tracking-details/${record.key}`}
           className="text-primary font-medium"
         >
           Track
