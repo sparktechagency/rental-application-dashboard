@@ -75,21 +75,22 @@ const Sidebar = ({ isSidebarOpen }) => {
           />
         </div>
 
-        <div className="flex flex-col gap-4 py-3">
+        <div className="flex flex-col gap-4 py-3 ">
           {/* Sidebar Menu */}
-          <ul className="w-full flex flex-col gap-2">
+          <ul className="w-full flex flex-col gap-3.5">
             {sidebarItems.map((item) => (
               <NavLink
                 key={item.name}
                 to={item.path}
                 className={({ isActive }) =>
                   isActive
-                    ? "px-10 py-4 flex items-center gap-3  font-semibold text-primary"
-                    : "px-10 py-4 flex items-center gap-3 font-semibold text-[#9B9B9B]"
+                    ? `${isSidebarOpen ? "px-10 py-4" : "px-5 py-2"} flex items-center gap-3  font-semibold text-primary`
+                    : `${isSidebarOpen ? "px-10 py-4" : "px-5 py-2"} flex items-center gap-3  font-semibold text-gray-500`
                 }
               >
                 {item.icon}
                 {isSidebarOpen && <span>{item.name}</span>}
+                 
               </NavLink>
             ))}
           </ul>
@@ -98,7 +99,7 @@ const Sidebar = ({ isSidebarOpen }) => {
         {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 px-10 py-4 text-rose-500 mt-10"
+          className={`flex items-center gap-2  text-rose-500 mt-10 font-semibold ${isSidebarOpen ? "px-10 py-4" : "px-5 py-2"} `}
         >
           <IoIosLogOut className="size-7" />
           {isSidebarOpen && <span>Logout</span>}

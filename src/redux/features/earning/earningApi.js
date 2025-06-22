@@ -6,9 +6,17 @@ const earningApi = baseApi.injectEndpoints({
       query: () => ({
         url: "/payment/history",
         method: "GET",
-      })
+      }),
+    }),
+    getEarningGraphCharts: builder.query({
+      query: ({ period, year, month }) => ({
+        url: "/dashboard/earningChart",
+        method: "GET",
+        params: { period, year, month },
+      }),
     }),
   }),
 });
 
-export const { useGetAllEarningsQuery } = earningApi;
+export const { useGetAllEarningsQuery, useGetEarningGraphChartsQuery } =
+  earningApi;

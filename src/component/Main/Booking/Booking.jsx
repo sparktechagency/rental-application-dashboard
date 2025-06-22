@@ -1,21 +1,23 @@
 import { useState } from "react";
 import { Table, Select, Tag } from "antd";
 import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
-import { Link } from "react-router-dom";
 import moment from "moment";
 import { useGetAllBookingsQuery } from "../../../redux/features/booking/bookingApi";
+import { Modal } from "antd";
+import { FaCalendarAlt, FaEnvelope, FaUserAlt } from "react-icons/fa";
 
 const { Option } = Select;
 
 const Booking = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(7);
-  const [filterDate, setFilterDate] = useState("Today"); // For table
-  // const [calendarFilter, setCalendarFilter] = useState("overdue"); // For calendar
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Current month
+  const [filterDate, setFilterDate] = useState("Today");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   //get all bookings
-  const { data: responseData, isLoading, } = useGetAllBookingsQuery();
+  const { data: responseData, isLoading } = useGetAllBookingsQuery();
   const allBookings = responseData?.data || [];
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -44,7 +46,7 @@ const Booking = () => {
   const transformedBookings =
     allBookings?.map((booking) => ({
       key: booking?._id,
-      id: booking?._id?.slice(-6), // Show last 6 characters of ID
+      id: booking?._id, // Show last 6 characters of ID
       name: `${booking?.user?.firstName || ""} ${
         booking?.user?.lastName || ""
       }`.trim(),
@@ -92,12 +94,18 @@ const Booking = () => {
     return bookingsByDate;
   };
 
+  const handleSelectBooking = (booking) => {
+    setSelectedBooking(booking);
+    setIsModalOpen(true);
+  };
+
   const columns = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
       width: 80,
+      render: (text) => text.slice(-6), // Display last 6 characters
     },
     {
       title: "Name",
@@ -137,12 +145,12 @@ const Booking = () => {
       key: "action",
       width: 100,
       render: (_, record) => (
-        <Link
-          to={`/booking/${record.key}`}
+        <button
+          onClick={() => handleSelectBooking(record)}
           className="text-primary font-medium"
         >
           <Eye />
-        </Link>
+        </button>
       ),
     },
   ];
@@ -197,15 +205,6 @@ const Booking = () => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-green-500 rounded-full"></span>
             <span className="text-sm text-gray-600 mr-4">Pickup Dates</span>
-            {/* <Select
-              value={calendarFilter}
-              onChange={setCalendarFilter}
-              className="w-40"
-            >
-              <Option value="overdue">Overdue</Option>
-              <Option value="schedule_pickup">Schedule pickup</Option>
-              <Option value="rental_out">Rental out</Option>
-            </Select> */}
           </div>
         </div>
         <div className="w-full p-6">
@@ -300,6 +299,99 @@ const Booking = () => {
           />
         </div>
       </div>
+
+      {/* Booking Modal */}
+      <Modal
+        open={isModalOpen}
+        centered
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+        width={500}
+      >
+        {selectedBooking && (
+          <div className="p-4">
+            {/* Profile Image and Name */}
+            <div className="flex flex-col text-center items-center gap-4">
+              <div className="size-24 mx-auto rounded-full bg-gray-200 flex items-center justify-center border-2 border-primary">
+                <span className="text-gray-600 text-xl">
+                  {selectedBooking.name.charAt(0)}
+                </span>
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  {selectedBooking.name}
+                </h2>
+              </div>
+            </div>
+
+            {/* Booking Details */}
+            <div className="space-y-7 mt-8">
+              {/* Booking ID */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaUserAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Booking ID : </p>
+                </div>
+                <p className="text-gray-800 text-sm">{selectedBooking.id.slice(-6)}</p>
+              </div>
+
+              {/* Email */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaEnvelope className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Email : </p>
+                </div>
+                <p className="text-gray-800 text-sm">{selectedBooking.email}</p>
+              </div>
+
+              {/* Booking Dates */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaCalendarAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Booking Dates : </p>
+                </div>
+                <p className="text-gray-800 text-sm">{selectedBooking.bookingDate}</p>
+              </div>
+
+              {/* Status */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaUserAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Status : </p>
+                </div>
+                <p className="text-gray-800 text-sm capitalize">{selectedBooking.status}</p>
+              </div>
+
+              {/* Total Price */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaCalendarAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Total Price : </p>
+                </div>
+                <p className="text-gray-800 text-sm">${selectedBooking.totalPrice || "N/A"}</p>
+              </div>
+
+              {/* Phone */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaUserAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Phone : </p>
+                </div>
+                <p className="text-gray-800 text-sm">{selectedBooking.phone || "N/A"}</p>
+              </div>
+
+              {/* Address */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaCalendarAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Address : </p>
+                </div>
+                <p className="text-gray-800 text-sm">{selectedBooking.address || "N/A"}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </section>
   );
 };

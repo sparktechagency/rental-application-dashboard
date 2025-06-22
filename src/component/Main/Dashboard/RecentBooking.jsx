@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { Table, Select, Tag } from "antd";
+import { Table, Tag, Modal } from "antd";
 import { useGetAllBookingsQuery } from "../../../redux/features/booking/bookingApi";
 import { Eye } from "lucide-react";
 import moment from "moment";
-
-const { Option } = Select;
-
-
+import { FaCalendarAlt, FaEnvelope, FaUserAlt } from "react-icons/fa";
 
 const RecentBooking = () => {
-  const [filterDate, setFilterDate] = useState("Today");
   //get all bookings
   const { data: responseData, isLoading } = useGetAllBookingsQuery();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
   const allBookings = responseData?.data || [];
 
   const getStatusColor = (status) => {
@@ -53,6 +51,10 @@ const RecentBooking = () => {
       phone: booking?.phone,
       address: booking?.address,
     })) || [];
+  const handleSelectBooking = (booking) => {
+    setSelectedBooking(booking);
+    setIsModalOpen(true);
+  };
 
   const columns = [
     {
@@ -60,6 +62,7 @@ const RecentBooking = () => {
       dataIndex: "id",
       key: "id",
       width: 80,
+      render: (text) => text.slice(-6), // Display last 6 characters
     },
     {
       title: "Name",
@@ -98,25 +101,21 @@ const RecentBooking = () => {
       title: "Action",
       key: "action",
       width: 100,
-      render: () => <Eye />,
+      render: (_, record) => (
+        <button
+          onClick={() => handleSelectBooking(record)}
+          className="text-primary font-medium"
+        >
+          <Eye />
+        </button>
+      ),
     },
   ];
   return (
     <div className="bg-white rounded-lg shadow-sm">
       {/* Header */}
       <div className="flex justify-between items-center p-6 border-b border-gray-200">
-        <h1 className="text-xl font-semibold text-gray-900">All Booking</h1>
-        <Select
-          value={filterDate}
-          onChange={setFilterDate}
-          className="w-32"
-          suffixIcon={<span className="text-gray-400">▼</span>}
-        >
-          <Option value="Today">Today</Option>
-          <Option value="Yesterday">Yesterday</Option>
-          <Option value="This Week">This Week</Option>
-          <Option value="This Month">This Month</Option>
-        </Select>
+        <h1 className="text-xl font-semibold text-gray-900">All Bookings</h1>
       </div>
 
       {/* Table */}
@@ -130,6 +129,110 @@ const RecentBooking = () => {
           scroll={{ x: 800 }}
         />
       </div>
+      {/* Booking Modal */}
+      <Modal
+        open={isModalOpen}
+        centered
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+        width={500}
+      >
+        {selectedBooking && (
+          <div className="p-4">
+            {/* Profile Image and Name */}
+            <div className="flex flex-col text-center items-center gap-4">
+              <div className="size-24 mx-auto rounded-full bg-gray-200 flex items-center justify-center border-2 border-primary">
+                <span className="text-gray-600 text-xl">
+                  {selectedBooking.name.charAt(0)}
+                </span>
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  {selectedBooking.name}
+                </h2>
+              </div>
+            </div>
+
+            {/* Booking Details */}
+            <div className="space-y-7 mt-8">
+              {/* Booking ID */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaUserAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Booking ID : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  {selectedBooking.id.slice(-6)}
+                </p>
+              </div>
+
+              {/* Email */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaEnvelope className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Email : </p>
+                </div>
+                <p className="text-gray-800 text-sm">{selectedBooking.email}</p>
+              </div>
+
+              {/* Booking Dates */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaCalendarAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Booking Dates : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  {selectedBooking.bookingDate}
+                </p>
+              </div>
+
+              {/* Status */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaUserAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Status : </p>
+                </div>
+                <p className="text-gray-800 text-sm capitalize">
+                  {selectedBooking.status}
+                </p>
+              </div>
+
+              {/* Total Price */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaCalendarAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Total Price : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  ${selectedBooking.totalPrice || "N/A"}
+                </p>
+              </div>
+
+              {/* Phone */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaUserAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Phone : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  {selectedBooking.phone || "N/A"}
+                </p>
+              </div>
+
+              {/* Address */}
+              <div className="flex justify-between items-center gap-3">
+                <div className="flex items-center gap-3">
+                  <FaCalendarAlt className="text-gray-600 size-5" />
+                  <p className="text-sm text-gray-500">Address : </p>
+                </div>
+                <p className="text-gray-800 text-sm">
+                  {selectedBooking.address || "N/A"}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

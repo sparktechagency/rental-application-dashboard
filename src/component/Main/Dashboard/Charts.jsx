@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -10,48 +10,31 @@ import {
   ResponsiveContainer,
   ReferenceDot,
 } from "recharts";
+import { useGetEarningGraphChartsQuery } from "../../../redux/features/earning/earningApi";
+import { FaCalendar, FaClock, FaChartLine } from "react-icons/fa";
 
-// Demo data matching the chart pattern from the image
-const monthlyData = [
-  { month: "Jan", revenue: 32000, spent: 28000 },
-  { month: "Feb", revenue: 35000, spent: 30000 },
-  { month: "Mar", revenue: 38000, spent: 32000 },
-  { month: "Apr", revenue: 36000, spent: 31000 },
-  { month: "May", revenue: 42000, spent: 35000 },
-  { month: "Jun", revenue: 39000, spent: 33000 },
-  { month: "Jul", revenue: 35000, spent: 30000 },
-  { month: "Aug", revenue: 41000, spent: 34000 },
-  { month: "Sep", revenue: 40000, spent: 33500 },
-  { month: "Oct", revenue: 43000, spent: 36000 },
-  { month: "Nov", revenue: 42500, spent: 35500 },
-  { month: "Dec", revenue: 44000, spent: 37000 },
-];
-
-const weeklyData = [
-  { month: "Week 1", revenue: 8500, spent: 7200 },
-  { month: "Week 2", revenue: 9200, spent: 7800 },
-  { month: "Week 3", revenue: 10800, spent: 9100 },
-  { month: "Week 4", revenue: 8900, spent: 7500 },
-];
-
-const yearlyData = [
-  { month: "2020", revenue: 380000, spent: 320000 },
-  { month: "2021", revenue: 420000, spent: 350000 },
-  { month: "2022", revenue: 450000, spent: 380000 },
-  { month: "2023", revenue: 480000, spent: 400000 },
-  { month: "2024", revenue: 500000, spent: 420000 },
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
+      <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-md">
         <p className="font-semibold text-gray-800">{label}</p>
         <p className="text-green-600">{`Revenue: $${(
           payload[0]?.value || 0
-        ).toLocaleString()}`}</p>
-        <p className="text-orange-600">{`Spent: $${(
-          payload[1]?.value || 0
         ).toLocaleString()}`}</p>
       </div>
     );
@@ -60,28 +43,63 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const TotalRevenueChart = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState("Monthly");
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const yearRange = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i); // 5 years before and after
+  const monthRange = monthNames.map((name, index) => ({ name, index }));
+  const [selectedPeriod, setSelectedPeriod] = useState("Yearly");
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 
-  const getDataByPeriod = () => {
-    switch (selectedPeriod) {
-      case "Weekly":
-        return weeklyData;
-      case "Yearly":
-        return yearlyData;
-      default:
-        return monthlyData;
+  const { data: apiData, isLoading } = useGetEarningGraphChartsQuery({
+    period: selectedPeriod.toLowerCase(),
+    year: selectedYear,
+    month:
+      selectedPeriod.toLowerCase() === "monthly" || selectedPeriod.toLowerCase() === "weekly"
+        ? selectedMonth + 1
+        : undefined,
+  });
+
+  useEffect(() => {
+    if (apiData) {
+      const earnings = apiData.earnings || [];
+      let transformedData = earnings.map((item) => ({
+        month: item?.name,
+        revenue: item.totalEarnings || 0,
+      }));
+
+      setCurrentData(transformedData);
+
+      // Calculate totals
+      const revenueSum = transformedData.reduce(
+        (sum, item) => sum + (item.revenue || 0),
+        0
+      );
+      setTotalRevenue(revenueSum);
+
+      // Simple growth percentage calculation (demo logic)
+      const lastYearRevenue =
+        transformedData.length > 1
+          ? transformedData[transformedData.length - 2]?.revenue || 0
+          : 0;
+      const currentYearRevenue = transformedData[transformedData.length - 1]?.revenue || 0;
+      const growth =
+        lastYearRevenue > 0
+          ? ((currentYearRevenue - lastYearRevenue) / lastYearRevenue) * 100
+          : 0;
+      setGrowthPercentage(isNaN(growth) ? 0 : growth.toFixed(2));
     }
-  };
+  }, [apiData, selectedPeriod, selectedYear, selectedMonth]);
 
-  const currentData = getDataByPeriod();
-  const totalRevenue = currentData.reduce((sum, item) => sum + item.revenue, 0);
-  const totalSpent = currentData.reduce((sum, item) => sum + item.spent, 0);
-  const growthPercentage = 24.44; // Demo percentage
+  const [currentData, setCurrentData] = useState([]);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [growthPercentage, setGrowthPercentage] = useState(0);
 
   // Find the peak point for the reference dot
   const peakData = currentData.reduce(
     (max, item) => (item.revenue > max.revenue ? item : max),
-    currentData[0]
+    currentData[0] || { revenue: 0 }
   );
 
   const formatCurrency = (value) => {
@@ -93,30 +111,88 @@ const TotalRevenueChart = () => {
     return `$${value}`;
   };
 
+  if (isLoading) {
+    return <div className="bg-white rounded-2xl shadow-sm p-6 mx-auto">Loading...</div>;
+  }
+
+  const chartTitle =
+    selectedPeriod === "Weekly"
+      ? `Weekly Revenue for ${monthNames[selectedMonth]} ${selectedYear}`
+      : selectedPeriod === "Monthly"
+      ? `Monthly Revenue for ${selectedYear}`
+      : `Yearly Revenue (${selectedYear - 5} - ${selectedYear + 5})`;
+
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6 mx-auto">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-gray-600 text-sm font-medium mb-2">
-            Total revenue
-          </h2>
-          <div className="flex items-center gap-4">
-            <span className="text-3xl font-bold text-green-500">
-              {formatCurrency(totalRevenue)}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div className="flex items-center gap-3">
+          <h1 className="text-[20px] font-bold text-gray-800">{chartTitle}</h1>
+          <div className="flex gap-2">
+            <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+              <FaChartLine className="mr-1" />{" "}
+              {selectedPeriod.charAt(0).toUpperCase() + selectedPeriod.slice(1)}
             </span>
+            <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+              <FaCalendar className="mr-1" /> {selectedYear}
+            </span>
+            {(selectedPeriod === "Monthly" || selectedPeriod === "Weekly") && (
+              <span className="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-800 text-sm font-medium rounded-full">
+                <FaClock className="mr-1" /> {monthNames[selectedMonth]}
+              </span>
+            )}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <select
-            value={selectedPeriod}
-            onChange={(e) => setSelectedPeriod(e.target.value)}
-            className="w-32 px-5 py-2 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="Monthly">Monthly</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Yearly">Yearly</option>
-          </select>
+        <div className="flex gap-4">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Select Period</label>
+            <select
+              value={selectedPeriod}
+              onChange={(e) => {
+                setSelectedPeriod(e.target.value);
+                if (e.target.value === "Monthly" || e.target.value === "Weekly") {
+                  setSelectedMonth(currentMonth);
+                }
+              }}
+              className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
+              aria-label="Select Period"
+            >
+              <option value="Monthly">Monthly</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Select Year</label>
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
+              className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
+              aria-label="Select Year"
+            >
+              {yearRange.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          {(selectedPeriod === "Monthly" || selectedPeriod === "Weekly") && (
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">Select Month</label>
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
+                aria-label="Select Month"
+              >
+                {monthRange.map(({ name, index }) => (
+                  <option key={index} value={index}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       </div>
 
@@ -124,9 +200,9 @@ const TotalRevenueChart = () => {
       <div className="flex items-center gap-6 mb-6">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-          <span className="text-sm text-gray-600">Total Spent</span>
+          <span className="text-sm text-gray-600">Total Revenue</span>
           <span className="text-sm font-medium text-gray-800">
-            {formatCurrency(totalSpent)}
+            {formatCurrency(totalRevenue)}
           </span>
           <span className="text-green-500 text-sm font-medium">
             +{growthPercentage}%
@@ -163,16 +239,6 @@ const TotalRevenueChart = () => {
               strokeWidth={3}
               dot={false}
               activeDot={{ r: 4, fill: "#22c55e" }}
-            />
-
-            {/* Spent Line */}
-            <Line
-              type="monotone"
-              dataKey="spent"
-              stroke="#f59e0b"
-              strokeWidth={3}
-              dot={false}
-              activeDot={{ r: 4, fill: "#f59e0b" }}
             />
 
             {/* Peak point marker */}

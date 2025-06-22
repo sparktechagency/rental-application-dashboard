@@ -16,13 +16,6 @@ const dashboardApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response?.data?.attributes,
     }),
-    getEarningGraphCharts: builder.query({
-    query: ({ period, year, month }) => ({
-        url: "/admin/earning-graph-chart",
-        params: { period, year, month },
-      }),
-      transformResponse: (response) => response?.data?.attributes,
-    }),
     getUserActivity: builder.query({
       query: (period) => ({
         url: `/admin/users-activity?period=${period}`,
@@ -36,6 +29,5 @@ const dashboardApi = baseApi.injectEndpoints({
 export const {
   useGetDashboardDataQuery,
   useGetIncomeRatioQuery,
-  useGetEarningGraphChartsQuery,
   useGetUserActivityQuery,
 } = dashboardApi;
