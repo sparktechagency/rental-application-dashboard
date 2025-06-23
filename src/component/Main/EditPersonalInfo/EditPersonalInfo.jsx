@@ -47,7 +47,7 @@ const EditInformation = () => {
         formData.append("image", imageFile);
       }
       const response = await updateProfileInfo(formData).unwrap();
-      dispatch(updateUser({ user: response?.data?.attributes }));
+      dispatch(updateUser({ user: response?.data }));
       toast.success("Profile updated successfully!");
       navigate("/personal-info");
     } catch (error) {

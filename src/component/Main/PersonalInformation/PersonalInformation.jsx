@@ -55,12 +55,12 @@ const PersonalInformation = () => {
           className="w-full col-span-full md:col-span-9 space-y-6 mt-10"
         >
            {/* first Name */}
-          <Form.Item label="First Name" name="firstName">
-            <CustomInput placeholder="Enter your first name" />
+          <Form.Item label="First Name" name="firstName" >
+            <CustomInput placeholder="Enter your first name" readOnly />
           </Form.Item>
           {/* Last Name */}
           <Form.Item label="Last Name" name="lastName">
-            <CustomInput placeholder="Enter your last name" />
+            <CustomInput placeholder="Enter your last name" readOnly />
           </Form.Item>
           {/* Email */}
           <Form.Item label="Email" name="email">
