@@ -222,20 +222,14 @@ const Booking = () => {
             {days.map((day, index) => (
               <div
                 key={index}
-                className={`h-28 border border-gray-100 p-1 relative ${
-                  bookingsByDate[day] ? "bg-[#F4FEEE]" : ""
+                  className={`h-28 border ${bookingsByDate[day] && moment().date() === day ? "border-2 border-[#3348FF]" : "border-gray-100"} p-1 relative ${
+                  bookingsByDate[day] ? "bg-[#F4FEEE] " : ""
                 }`}
               >
                 {day && (
                   <>
                     <div
-                      className={`text-lg ${
-                        day === moment().date() &&
-                        moment(selectedDate).month() === moment().month() &&
-                        moment(selectedDate).year() === moment().year()
-                          ? "font-bold text-blue-600"
-                          : "text-gray-700"
-                      } mb-1`}
+                      className={`text-lg text-gray-700 mb-1`}
                     >
                       {day}
                     </div>
