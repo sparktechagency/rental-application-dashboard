@@ -156,16 +156,13 @@ const TotalRevenueChart = () => {
             </label>
             <Select
               value={selectedPeriod}
-              onChange={(e) => {
-                setSelectedPeriod(e.target.value);
-                if (
-                  e.target.value === "Monthly" ||
-                  e.target.value === "Weekly"
-                ) {
+              onChange={(value) => {
+                setSelectedPeriod(value);
+                if (value === "Monthly" || value === "Weekly") {
                   setSelectedMonth(currentMonth);
                 }
               }}
-              aria-label="Select Period"
+              className="w-32"
             >
               <Select.Option value="Monthly">Monthly</Select.Option>
               <Select.Option value="Weekly">Weekly</Select.Option>
@@ -178,8 +175,8 @@ const TotalRevenueChart = () => {
             </label>
             <Select
               value={selectedYear}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
-              aria-label="Select Year"
+              onChange={(value) => setSelectedYear(Number(value))}
+              className="w-32"
             >
               {yearRange.map((year) => (
                 <Select.Option key={year} value={year}>
@@ -195,8 +192,8 @@ const TotalRevenueChart = () => {
               </label>
               <Select
                 value={selectedMonth}
-                onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                aria-label="Select Month"
+                onChange={(value) => setSelectedMonth(Number(value))}
+                className="w-32"
               >
                 {monthRange.map(({ name, index }) => (
                   <Select.Option key={index} value={index}>

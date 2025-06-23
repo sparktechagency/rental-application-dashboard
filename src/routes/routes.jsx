@@ -27,8 +27,8 @@ import AllCars from "../component/Main/AllCars/AllCars";
 import ManualBooking from "../component/Main/ManualBooking/ManualBooking";
 import AddManualBooking from "../component/Main/AddManualBooking/AddManualBooking";
 import Employee from "../component/Main/Employee/Employee";
-import AddEmployee from "../component/Main/AddEmployee/AddEmployee";
 import EditEmployee from "../component/Main/EditEmployee/EditEmployee";
+import AddEmployee from "../component/Main/AddEmployee/AddEmployee";
 
 const router = createBrowserRouter([
   {
