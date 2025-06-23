@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { useGetEarningGraphChartsQuery } from "../../../redux/features/earning/earningApi";
 import { FaCalendar, FaClock, FaChartLine } from "react-icons/fa";
+import { Select } from "antd";
 
 const monthNames = [
   "January",
@@ -56,7 +57,8 @@ const TotalRevenueChart = () => {
     period: selectedPeriod.toLowerCase(),
     year: selectedYear,
     month:
-      selectedPeriod.toLowerCase() === "monthly" || selectedPeriod.toLowerCase() === "weekly"
+      selectedPeriod.toLowerCase() === "monthly" ||
+      selectedPeriod.toLowerCase() === "weekly"
         ? selectedMonth + 1
         : undefined,
   });
@@ -83,7 +85,8 @@ const TotalRevenueChart = () => {
         transformedData.length > 1
           ? transformedData[transformedData.length - 2]?.revenue || 0
           : 0;
-      const currentYearRevenue = transformedData[transformedData.length - 1]?.revenue || 0;
+      const currentYearRevenue =
+        transformedData[transformedData.length - 1]?.revenue || 0;
       const growth =
         lastYearRevenue > 0
           ? ((currentYearRevenue - lastYearRevenue) / lastYearRevenue) * 100
@@ -112,7 +115,11 @@ const TotalRevenueChart = () => {
   };
 
   if (isLoading) {
-    return <div className="bg-white rounded-2xl shadow-sm p-6 mx-auto">Loading...</div>;
+    return (
+      <div className="bg-white rounded-2xl shadow-sm p-6 mx-auto">
+        Loading...
+      </div>
+    );
   }
 
   const chartTitle =
@@ -121,7 +128,6 @@ const TotalRevenueChart = () => {
       : selectedPeriod === "Monthly"
       ? `Monthly Revenue for ${selectedYear}`
       : `Yearly Revenue (${selectedYear - 5} - ${selectedYear + 5})`;
-
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6 mx-auto">
@@ -145,53 +151,59 @@ const TotalRevenueChart = () => {
         </div>
         <div className="flex gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Select Period</label>
-            <select
+            <label className="text-sm font-medium text-gray-700">
+              Select Period
+            </label>
+            <Select
               value={selectedPeriod}
               onChange={(e) => {
                 setSelectedPeriod(e.target.value);
-                if (e.target.value === "Monthly" || e.target.value === "Weekly") {
+                if (
+                  e.target.value === "Monthly" ||
+                  e.target.value === "Weekly"
+                ) {
                   setSelectedMonth(currentMonth);
                 }
               }}
-              className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
               aria-label="Select Period"
             >
-              <option value="Monthly">Monthly</option>
-              <option value="Weekly">Weekly</option>
-              <option value="Yearly">Yearly</option>
-            </select>
+              <Select.Option value="Monthly">Monthly</Select.Option>
+              <Select.Option value="Weekly">Weekly</Select.Option>
+              <Select.Option value="Yearly">Yearly</Select.Option>
+            </Select>
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Select Year</label>
-            <select
+            <label className="text-sm font-medium text-gray-700">
+              Select Year
+            </label>
+            <Select
               value={selectedYear}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
-              className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
               aria-label="Select Year"
             >
               {yearRange.map((year) => (
-                <option key={year} value={year}>
+                <Select.Option key={year} value={year}>
                   {year}
-                </option>
+                </Select.Option>
               ))}
-            </select>
+            </Select>
           </div>
           {(selectedPeriod === "Monthly" || selectedPeriod === "Weekly") && (
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Select Month</label>
-              <select
+              <label className="text-sm font-medium text-gray-700">
+                Select Month
+              </label>
+              <Select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
                 aria-label="Select Month"
               >
                 {monthRange.map(({ name, index }) => (
-                  <option key={index} value={index}>
+                  <Select.Option key={index} value={index}>
                     {name}
-                  </option>
+                  </Select.Option>
                 ))}
-              </select>
+              </Select>
             </div>
           )}
         </div>

@@ -26,6 +26,9 @@ import CarTrackingDetails from "../component/Main/CarTracking/CarTrackingDetails
 import AllCars from "../component/Main/AllCars/AllCars";
 import ManualBooking from "../component/Main/ManualBooking/ManualBooking";
 import AddManualBooking from "../component/Main/AddManualBooking/AddManualBooking";
+import Employee from "../component/Main/Employee/Employee";
+import AddEmployee from "../component/Main/AddEmployee/AddEmployee";
+import EditEmployee from "../component/Main/EditEmployee/EditEmployee";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +47,18 @@ const router = createBrowserRouter([
       {
         path: "all-users",
         element: <AllUsers />,
+      },
+      {
+        path: "/employees",
+        element: <Employee />,
+      },
+      {
+        path: "/employees/add-employee",
+        element: <AddEmployee />,
+      },
+      {
+        path: "/employees/edit-employee/:id",
+        element: <EditEmployee />,
       },
       {
         path: "booking",
@@ -67,15 +82,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-vehicle",
-        element: <AddCar />
+        element: <AddCar />,
       },
       {
         path: "/edit-vehicle/:id",
         element: <EditCar />,
       },
       {
-        path:"/car-tracking-details/:id",
-        element: <CarTrackingDetails />
+        path: "/car-tracking-details/:id",
+        element: <CarTrackingDetails />,
       },
       {
         path: "personal-info",

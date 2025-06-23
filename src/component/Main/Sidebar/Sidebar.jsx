@@ -7,7 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../redux/features/auth/authSlice";
 import logo from "../../../assets/logo/logo.png";
-import { CalendarCheck, Car } from "lucide-react";
+import { CalendarCheck, Car, UsersRound } from "lucide-react";
 
 const sidebarItems = [
   {
@@ -39,6 +39,11 @@ const sidebarItems = [
     path: "/all-users",
     name: "Users",
     icon: <PiUsers className="size-7" />,
+  },
+  {
+    path: "/employees",
+    name: "Employees",
+    icon: <UsersRound className="size-6" />,
   },
   {
     path: "/settings",
