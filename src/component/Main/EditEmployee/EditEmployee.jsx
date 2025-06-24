@@ -2,15 +2,48 @@ import { Form } from "antd";
 import CustomInput from "../../../utils/CustomInput";
 import CustomButton from "../../../utils/CustomButton";
 import { ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useEditEmployeeMutation,
+  useGetEmployeeQuery,
+} from "../../../redux/features/employee/employeeApi";
+import { useEffect } from "react";
+import { toast } from "sonner";
 const EditEmployee = () => {
+  const { id } = useParams();
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log("Add Employee:", values);
-    // Handle form submission logic here
+  //get single employee
+  const { data: responseData } = useGetEmployeeQuery(id, {
+    refetchOnMountOrArgChange: true,
+    skip: !id,
+  });
+
+  //update employee
+  const [updateEmployee, { isLoading }] = useEditEmployeeMutation();
+  useEffect(() => {
+    if (responseData) {
+      form.setFieldsValue({
+        firstName: responseData.firstName,
+        lastName: responseData.lastName,
+        email: responseData.email,
+        phone: responseData.phone,
+        password: responseData.password,
+        role: responseData.role,
+      });
+    }
+  }, [responseData, form]);
+
+  const onFinish = async (values) => {
+    try {
+      const response = await updateEmployee({ id, data: values }).unwrap();
+      toast.success(response?.message);
+      navigate("/employees");
+    } catch (error) {
+      toast.error(error?.data?.errorMessage || "Something went wrong");
+    }
   };
 
   return (
@@ -23,7 +56,9 @@ const EditEmployee = () => {
         >
           <ChevronLeft size={24} className="text-primary" />
         </button>
-        <h1 className="text-xl lg:text-2xl font-semibold text-primary">Edit Employee</h1>
+        <h1 className="text-xl lg:text-2xl font-semibold text-primary">
+          Edit Employee
+        </h1>
       </div>
       <Form
         form={form}
@@ -32,15 +67,28 @@ const EditEmployee = () => {
         layout="vertical"
       >
         <Form.Item
-          name="employeeName"
-          label="Employee Name"
-          rules={[{ required: true, message: "Please input Employee Name!" }]}
+          name="firstName"
+          label="Employee First Name"
+          rules={[
+            { required: true, message: "Please input Employee First Name!" },
+          ]}
+        >
+          <CustomInput type="text" placeholder="Employee Name" />
+        </Form.Item>
+
+        {/* Last Name */}
+        <Form.Item
+          name="lastName"
+          label="Employee Last Name"
+          rules={[
+            { required: true, message: "Please input Employee Last Name!" },
+          ]}
         >
           <CustomInput type="text" placeholder="Employee Name" />
         </Form.Item>
 
         <Form.Item
-          name="employeeEmail"
+          name="email"
           label="Employee Email"
           rules={[
             {
@@ -52,42 +100,8 @@ const EditEmployee = () => {
         >
           <CustomInput type="text" placeholder="Employee Name" />
         </Form.Item>
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: "Please input Password!" }]}
-        >
-          <CustomInput
-            type="password"
-            placeholder={"Enter password"}
-            isPassword
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="confirmPassword"
-          label="Confirm Password"
-          rules={[
-            { required: true, message: "Please confirm Password!" },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error("Passwords do not match!"));
-              },
-            }),
-          ]}
-        >
-          <CustomInput
-            type="password"
-            placeholder={"Enter password"}
-            isPassword
-          />
-        </Form.Item>
-
         <Form.Item>
-          <CustomButton type="primary" htmlType="submit" className={"w-full"}>
+          <CustomButton loading={isLoading} type="primary" htmlType="submit" className={"w-full"}>
             Update Employee
           </CustomButton>
         </Form.Item>

@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { ConfigProvider, Table } from "antd";
-import { useGetAllUsersQuery } from "../../../redux/features/user/userApi";
 import { imageBaseUrl } from "../../../config/imageBaseUrl";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import { useGetAllEmployeesQuery } from "../../../redux/features/employee/employeeApi";
 
 const Employee = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [allUsers, setAllUsers] = useState([]);
   const [totalResult, setTotalResult] = useState(0);
 
-  const { data: responseData, isLoading } = useGetAllUsersQuery({
+  const { data: responseData, isLoading } = useGetAllEmployeesQuery({
     page: currentPage,
     limit: 10,
   });
@@ -32,7 +33,7 @@ const Employee = () => {
     name: `${user?.firstName} ${user?.lastName}` || "N/A",
     profileImage: user?.profileImage,
     registrationDate: user?.createdAt
-      ? new Date(user?.createdAt).toLocaleDateString()
+      ? moment(user?.createdAt).format("YYYY-MM-DD")
       : "N/A",
     email: user?.email || "N/A",
     role: user?.role || "N/A",
@@ -92,6 +93,7 @@ const Employee = () => {
     },
   ];
 
+  console.log("Employees", responseData);
   return (
     <section className="w-full min-h-screen px-5 space-y-5 bg-[#F5F5F5]">
       <div className="flex justify-end">

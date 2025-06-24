@@ -3,14 +3,24 @@ import CustomInput from "../../../utils/CustomInput";
 import CustomButton from "../../../utils/CustomButton";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAddEmployeeMutation } from "../../../redux/features/employee/employeeApi";
+import { toast } from "sonner";
 const AddEmployee = () => {
   const [form] = Form.useForm();
 
+  // add employee mutation
+  const [addEmployee, { isLoading }] = useAddEmployeeMutation();
+
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log("Add Employee:", values);
-    // Handle form submission logic here
+  const onFinish = async (values) => {
+    try {
+      const response = await addEmployee(values).unwrap();
+      toast.success(response?.message);
+      navigate("/employees");
+    } catch (error) {
+      toast.error(error?.data?.errorMessage);
+    }
   };
 
   return (
@@ -23,7 +33,9 @@ const AddEmployee = () => {
         >
           <ChevronLeft size={24} className="text-primary" />
         </button>
-        <h1 className="text-xl lg:text-2xl font-semibold text-primary">Add Employee</h1>
+        <h1 className="text-xl lg:text-2xl font-semibold text-primary">
+          Add Employee
+        </h1>
       </div>
       <Form
         form={form}
@@ -32,15 +44,27 @@ const AddEmployee = () => {
         layout="vertical"
       >
         <Form.Item
-          name="employeeName"
-          label="Employee Name"
-          rules={[{ required: true, message: "Please input Employee Name!" }]}
+          name="firstName"
+          label="Employee First Name"
+          rules={[
+            { required: true, message: "Please input Employee First Name!" },
+          ]}
         >
           <CustomInput type="text" placeholder="Employee Name" />
         </Form.Item>
 
+        {/* Last Name */}
         <Form.Item
-          name="employeeEmail"
+          name="lastName"
+          label="Employee Last Name"
+          rules={[
+            { required: true, message: "Please input Employee Last Name!" },
+          ]}
+        >
+          <CustomInput type="text" placeholder="Employee Name" />
+        </Form.Item>
+        <Form.Item
+          name="email"
           label="Employee Email"
           rules={[
             {
@@ -87,7 +111,12 @@ const AddEmployee = () => {
         </Form.Item>
 
         <Form.Item>
-          <CustomButton type="primary" htmlType="submit" className={"w-full"}>
+          <CustomButton
+            loading={isLoading}
+            type="primary"
+            htmlType="submit"
+            className={"w-full"}
+          >
             Add Employee
           </CustomButton>
         </Form.Item>
