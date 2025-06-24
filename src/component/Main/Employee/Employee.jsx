@@ -5,7 +5,11 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { useGetAllEmployeesQuery } from "../../../redux/features/employee/employeeApi";
+import {
+  useDeleteEmployeeMutation,
+  useGetAllEmployeesQuery,
+} from "../../../redux/features/employee/employeeApi";
+import { toast } from "sonner";
 
 const Employee = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +21,9 @@ const Employee = () => {
     limit: 10,
   });
 
+  // delete employee
+  const [deleteEmployee] = useDeleteEmployeeMutation();
+
   useEffect(() => {
     if (responseData) {
       const { data, pagination } = responseData;
@@ -26,6 +33,15 @@ const Employee = () => {
   }, [responseData]);
 
   const handlePageChange = (page) => setCurrentPage(page);
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteEmployee(id).unwrap();
+      toast.success("Employee deleted successfully");
+    } catch (error) {
+      toast.error(error?.data?.errorMessage || "Something went wrong");
+    }
+  };
 
   const dataSource = allUsers.map((user, index) => ({
     key: index + 1,
@@ -85,7 +101,7 @@ const Employee = () => {
             </button>
           </Link>
           {/* Delete */}
-          <button>
+          <button onClick={() => handleDelete(id)}>
             <FaTrash className="text-red-600 size-5" />
           </button>
         </div>

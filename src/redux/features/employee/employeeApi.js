@@ -41,7 +41,7 @@ const employeeApi = baseApi.injectEndpoints({
         url: `/employee/${id}`,
         method: "DELETE",
       }),
-
+      invalidatesTags: ["Employee"],
     }),
   }),
 });
