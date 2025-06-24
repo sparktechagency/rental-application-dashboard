@@ -1,7 +1,6 @@
 import { IoChevronBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { TbEdit } from "react-icons/tb";
-import CustomButton from "../../utils/CustomButton";
 import { useGetPrivacyPolicyQuery } from "../../redux/features/settings/settingsApi";
 import { Spin } from "antd";
 const PrivacyPolicy = () => {
@@ -24,16 +23,19 @@ const PrivacyPolicy = () => {
           <h1 className="text-2xl font-semibold">Privacy Policy</h1>
         </div>
         <Link to={"/settings/edit-privacy-policy"}>
-          <CustomButton border>
+          <button
+            className="px-8 py-3 flex justify-between items-center gap-2 bg-primary text-white rounded-lg"
+            type="submit"
+          >
             <TbEdit className="size-5" />
             <span>Edit</span>
-          </CustomButton>
+          </button>
         </Link>
       </div>
       {/* Your privacy policy content goes here */}
       <div
        className="pb-9"
-        dangerouslySetInnerHTML={{ __html: responseData?.privacyPolicy }}
+        dangerouslySetInnerHTML={{ __html: responseData?.description }}
       ></div>
     </section>
   );

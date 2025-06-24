@@ -7,13 +7,12 @@ import {
   useAddTermsAndConditionsMutation,
 } from "../../../redux/features/settings/settingsApi";
 import { toast } from "sonner";
-import CustomButton from "../../../utils/CustomButton";
 import JoditEditor from "jodit-react"; // Import Jodit Editor
 
 const EditTermsConditions = () => {
   const [form] = Form.useForm();
   const [content, setContent] = useState("");
-  const editor = useRef(null); 
+  const editor = useRef(null);
   const navigate = useNavigate();
 
   // Fetch Terms and Conditions content
@@ -23,15 +22,15 @@ const EditTermsConditions = () => {
 
   // Populate content once fetched
   useEffect(() => {
-    if (responseData?.termsConditions) {
-      setContent(responseData.termsConditions);
+    if (responseData?.description) {
+      setContent(responseData.description);
     }
   }, [responseData]);
 
   const handleSubmit = async () => {
     try {
       const response = await updateTermsAndConditions({
-        termsConditions: content,
+        description: content,
       }).unwrap();
       toast.success(
         response?.message || "Terms and Conditions updated successfully."
@@ -70,15 +69,17 @@ const EditTermsConditions = () => {
                 ref={editor} // Attach the ref to the JoditEditor
                 value={content}
                 onChange={(newContent) => setContent(newContent)} // Handle changes
-
               />
             </Form.Item>
 
             {/* Update Button */}
-            <div className="flex justify-end">
-              <CustomButton loading={isUpdating}>
+            <div className="flex justify-center pb-5">
+              <button
+                className="px-8 py-3 bg-primary text-white rounded-lg"
+                type="submit"
+              >
                 {isUpdating ? "Updating..." : "Update"}
-              </CustomButton>
+              </button>
             </div>
           </Form>
         </div>

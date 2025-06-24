@@ -8,7 +8,6 @@ import {
   useAddPrivacyPolicyMutation,
   useGetPrivacyPolicyQuery,
 } from "../../../redux/features/settings/settingsApi";
-import CustomButton from "../../../utils/CustomButton";
 
 const EditPrivacyPolicy = () => {
   const [form] = Form.useForm();
@@ -21,15 +20,15 @@ const EditPrivacyPolicy = () => {
 
   // Set the editor content when the response data is loaded
   useEffect(() => {
-    if (responseData?.privacyPolicy) {
-      setContent(responseData.privacyPolicy);
+    if (responseData?.description) {
+      setContent(responseData.description);
     }
   }, [responseData]);
 
   const handleSubmit = async () => {
     try {
       const response = await addPrivacyPolicy({
-        privacyPolicy: content,
+        description: content,
       }).unwrap();
       toast.success(response?.message);
       navigate("/settings");
@@ -69,10 +68,13 @@ const EditPrivacyPolicy = () => {
             </Form.Item>
 
             {/* Update Button */}
-            <div className="flex justify-end">
-              <CustomButton loading={isMutating}>
+           <div className="flex justify-center pb-5">
+              <button
+                className="px-8 py-3 bg-primary text-white rounded-lg"
+                type="submit"
+              >
                 {isMutating ? "Updating..." : "Update"}
-              </CustomButton>
+              </button>
             </div>
           </Form>
         </div>

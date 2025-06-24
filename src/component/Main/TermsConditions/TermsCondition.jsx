@@ -1,7 +1,6 @@
 import { IoChevronBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { TbEdit } from "react-icons/tb";
-import CustomButton from "../../../utils/CustomButton";
 import { useGetTermsAndConditionsQuery } from "../../../redux/features/settings/settingsApi";
 import { Spin } from "antd";
 const TermsCondition = () => {
@@ -24,15 +23,18 @@ const TermsCondition = () => {
           <h1 className="text-2xl font-semibold">Terms & Conditions</h1>
         </div>
         <Link to={"/settings/edit-terms-conditions"}>
-          <CustomButton border>
+          <button
+            className="px-8 py-3 flex justify-between items-center gap-2 bg-primary text-white rounded-lg"
+            type="submit"
+          >
             <TbEdit className="size-5" />
             <span>Edit</span>
-          </CustomButton>
+          </button>
         </Link>
       </div>
       {/* Your privacy policy content goes here */}
       <div
-        dangerouslySetInnerHTML={{ __html: responseData?.termsConditions }}
+        dangerouslySetInnerHTML={{ __html: responseData?.description }}
       ></div>
     </section>
   );

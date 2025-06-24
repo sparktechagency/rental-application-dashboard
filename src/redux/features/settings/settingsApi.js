@@ -4,31 +4,23 @@ const settingsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getPrivacyPolicy: builder.query({
       query: () => ({
-        url: "/settings/privacy-policy",
+        url: "/privacy",
         method: "GET",
       }),
       providesTags: ["Settings"],
-      transformResponse: (response) => response?.data?.attributes,
+      transformResponse: (response) => response?.data[0],
     }),
     getTermsAndConditions: builder.query({
       query: () => ({
-        url: "/settings/terms-conditions",
+        url: "/terms",
         method: "GET",
       }),
       providesTags: ["Settings"],
-      transformResponse: (response) => response?.data?.attributes,
-    }),
-    getAboutUs: builder.query({
-      query: () => ({
-        url: "/settings/about-us",
-        method: "GET",
-      }),
-      providesTags: ["Settings"],
-      transformResponse: (response) => response?.data?.attributes,
+      transformResponse: (response) => response?.data[0],
     }),
     addPrivacyPolicy: builder.mutation({
       query: (data) => ({
-        url: "/settings/privacy-policy",
+        url: "/privacy/update",
         method: "POST",
         body: data,
       }),
@@ -36,36 +28,11 @@ const settingsApi = baseApi.injectEndpoints({
     }),
     addTermsAndConditions: builder.mutation({
       query: (data) => ({
-        url: "/settings/terms-conditions",
+        url: "/terms/update",
         method: "POST",
         body: data,
       }),
       invalidatesTags: ["Settings"],
-    }),
-
-    addAboutUs: builder.mutation({
-      query: (data) => ({
-        url: "/settings/about-us",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Settings"],
-    }),
-    addAdditionalCharge: builder.mutation({
-      query: (data) => ({
-        url: "/settings/additional-charge",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Settings"],
-    }),
-    getAdditionalCharge: builder.query({
-      query: () => ({
-        url: "/settings/additional-charge",
-        method: "GET",
-      }),
-      providesTags: ["Settings"],
-      transformResponse: (response) => response?.data?.attributes,
     }),
   }),
 });
