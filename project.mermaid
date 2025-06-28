@@ -1,0 +1,111 @@
+graph TB
+    subgraph "Client Layer"
+        MA[Mobile App - iOS]
+        MAA[Mobile App - Android]
+        WA[Web Admin Panel]
+        WEB[Public Website]
+    end
+    
+    subgraph "API Gateway"
+        AG[API Gateway<br/>Rate Limiting & Authentication]
+    end
+    
+    subgraph "Microservices Backend"
+        AS[Authentication Service]
+        US[User Service]
+        ADS[Ad Management Service]
+        SS[Search Service]
+        CS[Communication Service]
+        NS[Notification Service]
+        PS[Payment Service]
+        FS[File Service]
+        MS[Moderation Service]
+        ANS[Analytics Service]
+    end
+    
+    subgraph "Database Layer"
+        PDB[(PostgreSQL<br/>Primary Database)]
+        RDB[(Redis<br/>Cache & Sessions)]
+        ES[(Elasticsearch<br/>Search Index)]
+    end
+    
+    subgraph "External Services"
+        SMS[SMS Service<br/>Twilio]
+        EMAIL[Email Service<br/>SendGrid]
+        PUSH[Push Notifications<br/>FCM]
+        SOCIAL[Social Media APIs<br/>Facebook, Twitter]
+        MAPS[Maps API<br/>Google Maps]
+        STORAGE[File Storage<br/>AWS S3]
+        PAYMENT[Payment Gateway<br/>Stripe]
+    end
+    
+    subgraph "Infrastructure"
+        LB[Load Balancer]
+        CDN[CDN<br/>CloudFlare]
+        MON[Monitoring<br/>New Relic]
+    end
+    
+    %% Client connections
+    MA --> AG
+    MAA --> AG
+    WA --> AG
+    WEB --> CDN
+    
+    %% API Gateway to services
+    AG --> AS
+    AG --> US
+    AG --> ADS
+    AG --> SS
+    AG --> CS
+    AG --> NS
+    AG --> PS
+    AG --> FS
+    AG --> MS
+    AG --> ANS
+    
+    %% Service to database connections
+    AS --> PDB
+    AS --> RDB
+    US --> PDB
+    US --> RDB
+    ADS --> PDB
+    ADS --> ES
+    SS --> ES
+    SS --> PDB
+    CS --> PDB
+    CS --> RDB
+    NS --> RDB
+    PS --> PDB
+    FS --> STORAGE
+    MS --> PDB
+    ANS --> PDB
+    
+    %% External service connections
+    AS --> SMS
+    AS --> EMAIL
+    NS --> PUSH
+    US --> SOCIAL
+    ADS --> MAPS
+    PS --> PAYMENT
+    
+    %% Infrastructure connections
+    AG --> LB
+    CDN --> STORAGE
+    MON --> AS
+    MON --> US
+    MON --> ADS
+    
+    %% Styling
+    classDef clientLayer fill:#e1f5fe
+    classDef apiLayer fill:#f3e5f5
+    classDef serviceLayer fill:#e8f5e8
+    classDef dataLayer fill:#fff3e0
+    classDef externalLayer fill:#fce4ec
+    classDef infraLayer fill:#f1f8e9
+    
+    class MA,MAA,WA,WEB clientLayer
+    class AG apiLayer
+    class AS,US,ADS,SS,CS,NS,PS,FS,MS,ANS serviceLayer
+    class PDB,RDB,ES dataLayer
+    class SMS,EMAIL,PUSH,SOCIAL,MAPS,STORAGE,PAYMENT externalLayer
+    class LB,CDN,MON infraLayer
