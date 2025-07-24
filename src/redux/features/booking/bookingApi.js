@@ -7,6 +7,7 @@ const bookingApi = baseApi.injectEndpoints({
         url: "/booking/all",
         method: "GET",
       }),
+      providesTags: ["Bookings"],
     }),
     addManualBooking: builder.mutation({
       query: (data) => ({
@@ -14,12 +15,14 @@ const bookingApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["ManualBookings"],
     }),
     getManualBookings: builder.query({
       query: () => ({
         url: "/booking/manual",
         method: "GET",
       }),
+      providesTags: ["ManualBookings"],
     }),
   }),
 });

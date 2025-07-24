@@ -4,17 +4,13 @@ import { IoIosArrowBack } from "react-icons/io";
 import OTPInput from "react-otp-input";
 import { useState } from "react";
 import CustomButton from "../../../utils/CustomButton";
-import {
-  useVerifyEmailMutation,
-} from "../../../redux/features/auth/authApi";
+import { useVerifyEmailMutation } from "../../../redux/features/auth/authApi";
 import { toast } from "sonner";
-import { useSelector } from "react-redux";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
   const { email } = useParams();
   const navigate = useNavigate();
-  const verifyToken = useSelector((state) => state?.auth?.verifyToken);
   const [verifyOtp, { isLoading }] = useVerifyEmailMutation();
   const handleOtpChange = (otpValue) => {
     setOtp(otpValue);
@@ -23,18 +19,12 @@ const Otp = () => {
     try {
       const res = await verifyOtp({
         email,
-        token: verifyToken,
         otp,
-      });
-      if (res.error) {
-        toast.error(res?.error?.data?.message);
-      }
-      if (res.data) {
-        toast.success(res?.data?.message);
-        navigate(`/auth/new-password/${email}`);
-      }
+      }).unwrap();
+      toast.success(res?.message || "Verification successful");
+      navigate(`/auth/new-password/${email}`);
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error?.data?.message || "Verification failed");
     }
   };
   return (
@@ -71,18 +61,18 @@ const Otp = () => {
             outline: "none",
           }}
         />
-        <div onClick={handleMatchOtp} className="mt-10">
-          <CustomButton loading={isLoading} border className="w-full">
-            Verify
-          </CustomButton>
-        </div>
+        <CustomButton
+          onClick={handleMatchOtp}
+          loading={isLoading}
+          border
+          className="w-full mt-5"
+          type="submit"
+        >
+          Verify
+        </CustomButton>
         <div className="mt-5 flex justify-between items-center">
-          <p className="text-gray-500">
-            Didn&apos;t receive the code?{" "}
-          </p>
-            <button className="text-gray-600 font-semibold">
-              Resend Code
-            </button>
+          <p className="text-gray-500">Didn&apos;t receive the code? </p>
+          <button className="text-gray-600 font-semibold">Resend Code</button>
         </div>
       </div>
     </div>

@@ -13,21 +13,16 @@ const NewPassword = () => {
   const { email } = useParams();
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const submit = async (values) => {
-    const { password } = values;
     try {
       const res = await resetPassword({
         email,
-        password,
-      });
-      if (res.error) {
-        toast.error(res.error.data.message);
-      }
-      if (res.data) {
-        toast.success(res.data.message);
-        navigate("/auth");
-      }
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      }).unwrap();
+      toast.success(res?.message);
+      navigate("/auth");
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error?.data?.message);
     }
   };
 
@@ -68,7 +63,7 @@ const NewPassword = () => {
             ]}
           >
             <CustomInput
-             icon={GiPadlock}
+              icon={GiPadlock}
               isPassword
               type="password"
               placeholder="New Password"

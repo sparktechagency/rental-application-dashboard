@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { ConfigProvider, Table } from "antd";
-import { imageBaseUrl } from "../../../config/imageBaseUrl";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -60,18 +59,6 @@ const Employee = () => {
       title: "#SI",
       dataIndex: "key",
       key: "key",
-    },
-    {
-      title: "Image",
-      dataIndex: "profileImage",
-      key: "profileImage",
-      render: (image) => (
-        <img
-          src={`${imageBaseUrl}/${image}`}
-          alt="User"
-          className="w-10 h-10 rounded-full"
-        />
-      ),
     },
     {
       title: "Employee Name",

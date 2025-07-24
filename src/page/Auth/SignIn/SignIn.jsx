@@ -18,7 +18,6 @@ const SignIn = () => {
     const { email, password } = values;
     try {
       const res = await login({ email, password }).unwrap();
-      console.log("Response:", res);
       if (
         (!res?.data?.user?.role === "admin") |
         (!res?.data?.user?.role === "super_admin")

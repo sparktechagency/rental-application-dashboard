@@ -2,6 +2,7 @@
 import { Button } from "antd";
 
 const CustomButton = ({
+  onClick,
   loading = false,
   children,
   className,
@@ -17,6 +18,7 @@ const CustomButton = ({
         <Button
           type="default"
           htmlType="submit"
+          onClick={onClick}
           loading={loading}
           className="w-full bg-primary flex justify-center items-center gap-5 text-white rounded-md border-none"
           size="large"

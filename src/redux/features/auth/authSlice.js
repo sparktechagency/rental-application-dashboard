@@ -2,8 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   token: null,
-  user: null,
-  verifyToken: null,
+  user: null
 };
 
 const authSlice = createSlice({
@@ -22,7 +21,7 @@ const authSlice = createSlice({
       state.user = null;
     },
     addVerifyToken(state, action) {
-      state.verifyToken = action?.payload?.verifyToken;
+      state.token = action?.payload?.token;
     },
   },
 });

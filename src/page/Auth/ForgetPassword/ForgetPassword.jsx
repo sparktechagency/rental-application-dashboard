@@ -19,13 +19,12 @@ const ForgetPassword = () => {
   const submit = async (values) => {
     try {
       const res = await forgotPassword(values).unwrap();
-      console.log("Response:", res);
-      toast.success(res.data.message);
       dispatch(
         addVerifyToken({
-          verifyToken: res?.data?.data?.attributes?.resetPasswordToken,
+          token: res?.data?.token,
         })
       );
+      toast.success(res?.message);
       navigate(`/auth/otp/${values?.email}`);
     } catch (error) {
       console.log("Error:", error);

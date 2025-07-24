@@ -15,9 +15,9 @@ const baseQuery = fetchBaseQuery({
 // Enhanced base query with token refresh logic
 const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  if (result?.error?.status === 401) {
-    window.location.href = "/auth";
-  }
+  // if (result?.error?.status === 401) {
+  //   window.location.href = "/auth";
+  // }
 
   return result;
 };
@@ -26,19 +26,14 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithRefreshToken,
   tagTypes: [
     "User",
-    "CompanyType",
-    "Categories",
-    "Products",
-    "Businessman",
-    "Faq",
     "Orders",
     "Deals",
     "Events",
     "Notification",
     "Settings",
     "Subscription",
-    "OnbardingImage",
-    "DealCategory",
+    "Bookings",
+    "ManualBookings"
   ],
   endpoints: () => ({}),
 });
