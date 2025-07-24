@@ -58,7 +58,7 @@ const AllUsers = () => {
       title: "Image",
       dataIndex: "profileImage",
       key: "profileImage",
-      render: (image) => <img src={`${imageBaseUrl}/${image}`} alt="User" className="w-10 h-10 rounded-full" />,
+      render: (profileImage) => <img src={profileImage} alt="User" className="size-14 rounded-full border" />,
     },
     {
       title: "Name",
@@ -89,6 +89,7 @@ const AllUsers = () => {
     },
   ];
 
+  console.log("All Users:", allUsers);
 
   return (
     <section className="w-full min-h-screen px-5 bg-[#F5F5F5]">

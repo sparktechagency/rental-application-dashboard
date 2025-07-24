@@ -18,21 +18,18 @@ const ForgetPassword = () => {
 
   const submit = async (values) => {
     try {
-      const res = await forgotPassword(values);
-      if (res.error) {
-        toast.success(res?.error?.data?.message);
-      }
-      if (res.data) {
-        toast.success(res.data.message);
-        dispatch(
-          addVerifyToken({
-            verifyToken: res?.data?.data?.attributes?.resetPasswordToken,
-          })
-        );
-        navigate(`/auth/otp/${values?.email}`);
-      }
+      const res = await forgotPassword(values).unwrap();
+      console.log("Response:", res);
+      toast.success(res.data.message);
+      dispatch(
+        addVerifyToken({
+          verifyToken: res?.data?.data?.attributes?.resetPasswordToken,
+        })
+      );
+      navigate(`/auth/otp/${values?.email}`);
     } catch (error) {
-      toast.error("Something went wrong");
+      console.log("Error:", error);
+      toast.error(error?.data?.message);
     }
   };
 

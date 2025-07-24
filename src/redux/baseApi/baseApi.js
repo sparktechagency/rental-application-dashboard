@@ -1,6 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { toast } from "sonner";
-
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
@@ -17,17 +15,6 @@ const baseQuery = fetchBaseQuery({
 // Enhanced base query with token refresh logic
 const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-
-  // Handle various error statuses
-  if (result?.error?.status === 404) {
-    toast.error(result.error.data?.message || "Not Found");
-  }
-  if (result?.error?.status === 403) {
-    toast.error(result.error.data?.message || "Forbidden");
-  }
-  if (result?.error?.status === 409) {
-    toast.error(result.error.data?.message || "Conflict");
-  }
   if (result?.error?.status === 401) {
     window.location.href = "/auth";
   }
