@@ -9,5 +9,11 @@ export default defineConfig({
   server: {
     host: true,
     port: 7002,
+     allowedHosts: ["all"], 
+  },
+  preview: {
+    host: true,
+    port: 4173, 
+    allowedHosts: ["admin.kvrentals.us", "all"], 
   },
 });
